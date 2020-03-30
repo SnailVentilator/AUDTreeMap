@@ -12,7 +12,8 @@ public class MyMap<K,V> implements Map<K,V> {
 
 	@Override
 	public boolean isEmpty() {
-		throw new IllegalStateException("Not yet implemented!");
+		//FIXME: Implementation only works if put is not yet implemented
+		return true;
 	}
 
 	@Override
