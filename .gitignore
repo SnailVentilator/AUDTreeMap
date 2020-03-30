@@ -3,3 +3,6 @@ nbproject/private
 build
 gradle
 gradlew*
+.idea
+*.iml
+local.properties
