@@ -1,1 +1,5 @@
 nbproject/private
+.gradle
+build
+gradle
+gradlew*
