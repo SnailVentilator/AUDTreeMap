@@ -1,9 +1,6 @@
 package net.htlgrieskirchen.aud2.map;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	private MyEntry<K, V> root = null;
@@ -62,12 +59,12 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public Set<K> keySet() {
-		throw new IllegalStateException("Not yet implemented!");
+		return root.keySet();
 	}
 
 	@Override
 	public Collection<V> values() {
-		throw new IllegalStateException("Not yet implemented!");
+		return root.values();
 	}
 
 	@Override
@@ -133,5 +130,24 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return 1 + (left == null ? 0 : left.size()) + (right == null ? 0 : right.size());
 		}
 
+		public Set<K> keySet() {
+			Set<K> keySet = new HashSet<>();
+
+			keySet.add(key);
+			if(left != null) keySet.addAll(left.keySet());
+			if(right != null) keySet.addAll(right.keySet());
+
+			return keySet;
+		}
+
+		public Collection<V> values() {
+			Collection<V> values = new ArrayList<>();
+
+			values.add(value);
+			if(left != null) values.addAll(left.values());
+			if(right != null) values.addAll(right.values());
+
+			return values;
+		}
 	}
 }
