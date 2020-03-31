@@ -27,6 +27,15 @@ public class MyMapTest {
 		});
 	}
 
+	@Test
+	public void isEmptyTest() {
+		assertEqualResult(Map::isEmpty);
+		execute(map -> {
+			map.put(someString[0], someString[1]);
+		});
+		assertEqualResult(Map::isEmpty);
+	}
+
 	public static String[] someString = {"404", "Internet", "Not", "Found"};
 
 	/**
