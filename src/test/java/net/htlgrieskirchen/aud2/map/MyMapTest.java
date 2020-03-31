@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,9 +29,33 @@ public class MyMapTest {
 
 	public static String[] someString = {"404", "Internet", "Not", "Found"};
 
+	/**
+	 * This helper function executes a given function for each of the maps
+	 * being tested and then asserts that they are equal.
+	 * This is useful for the majority of tests that modify the state of
+	 * the map.
+	 *
+	 * @param runnable A lambda that is executed for each map before comparing
+	 */
 	public void executeAndCompare(Consumer<Map<String, String>> runnable) {
 		runnable.accept(myMap);
 		runnable.accept(treeMap);
 		assertEquals(myMap, treeMap);
+	}
+
+
+	/**
+	 * This helper function asserts that a given method reference results in the
+	 * same result for both maps.
+	 *
+	 * Example:
+	 * <pre>assertEqualResult(Map::size);</pre>
+	 *
+	 * @param function A method reference that returns something comparable
+	 */
+	public void assertEqualResult(Function<Map<String, String>, ? extends Comparable<?>> function) {
+		Comparable<?> myMapResult = function.apply(myMap);
+		Comparable<?> treeMapResult = function.apply(treeMap);
+		assertEquals(treeMapResult, myMapResult);
 	}
 }
