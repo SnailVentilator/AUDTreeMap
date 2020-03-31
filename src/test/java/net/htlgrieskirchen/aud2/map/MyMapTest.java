@@ -41,8 +41,8 @@ public class MyMapTest {
 	 * @param consumer A consumer that is executed for each map
 	 */
 	public void execute(Consumer<Map<String, String>> consumer) {
-		consumer.accept(treeMap);
 		consumer.accept(myMap);
+		consumer.accept(treeMap);
 	}
 
 	/**
@@ -55,13 +55,13 @@ public class MyMapTest {
 	 * @param function A method reference or other function that returns something comparable
 	 */
 	public void assertEqualResult(Function<Map<String, String>, ? extends Comparable<?>> function) {
-		Comparable<?> treeMapResult = function.apply(treeMap);
 		Comparable<?> myMapResult = function.apply(myMap);
+		Comparable<?> treeMapResult = function.apply(treeMap);
 		assertEquals(treeMapResult, myMapResult);
 	}
 
 	@Test
-	public void putBasic() {
+	public void putSimple() {
 		executeAndCompare(map -> map.put(someString[0], someString[1]));
 	}
 
@@ -74,13 +74,19 @@ public class MyMapTest {
 	@Test
 	public void putNull() {
 		executeAndCompare(map -> map.put(someString[0], null));
-		executeAndCompare(map -> map.put(null, someString[0]));
 	}
 
 	@Test
-	public void isEmptyTest() {
+	public void isEmptySimple() {
 		assertEqualResult(Map::isEmpty);
 		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(Map::isEmpty);
+	}
+
+	@Test
+	public void isEmptyNull() {
+		assertEqualResult(Map::isEmpty);
+		execute(map -> map.put(someString[0], null));
 		assertEqualResult(Map::isEmpty);
 	}
 }

@@ -90,9 +90,6 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public int compareTo(MyEntry<K, V> entry) {
-			if(entry.key == null) {
-				return 1;
-			}
 			return key.compareTo(entry.key);
 		}
 
