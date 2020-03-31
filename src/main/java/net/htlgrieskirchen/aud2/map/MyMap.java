@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
+public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	private MyEntry<K, V> root = null;
 
 	@Override
@@ -40,8 +40,8 @@ public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 		if(root == null) {
 			root = entry;
 			return null;
-		}else {
-			return root.put(key,value);
+		} else {
+			return root.put(key, value);
 		}
 	}
 
@@ -75,13 +75,13 @@ public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 		throw new IllegalStateException("Not yet implemented!");
 	}
 
-	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K,V>> {
+	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>> {
 		private K key;
 		private V value;
 
-		private MyEntry<K,V> parent;
-		private MyEntry<K,V> left;
-		private MyEntry<K,V> right;
+		private MyEntry<K, V> parent;
+		private MyEntry<K, V> left;
+		private MyEntry<K, V> right;
 
 		@Override
 		public int compareTo(MyEntry<K, V> entry) {
@@ -95,8 +95,8 @@ public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 
 		@Override
 		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
+			if(this == o) return true;
+			if(o == null || getClass() != o.getClass()) return false;
 			MyEntry<?, ?> myEntry = (MyEntry<?, ?>) o;
 			return Objects.equals(key, myEntry.key);
 		}
@@ -118,19 +118,19 @@ public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 					this.left = entry;
 					return null;
 				}
-				return this.left.put(key,value);
+				return this.left.put(key, value);
 			} else {
 				if(this.right == null) {
 					this.right = entry;
 					return null;
 				}
-				return this.right.put(key,value);
+				return this.right.put(key, value);
 			}
 
 		}
 
 		public int size() {
-			return 1+ (left==null?0:left.size()) + (right==null?0:right.size());
+			return 1 + (left == null ? 0 : left.size()) + (right == null ? 0 : right.size());
 		}
 
 	}

@@ -47,7 +47,7 @@ public class MyMapTest {
 	/**
 	 * This helper function asserts that a given method reference results in the
 	 * same result for both maps.
-	 *
+	 * <p>
 	 * Example:
 	 * <pre>assertEqualResult(Map::size);</pre>
 	 *
