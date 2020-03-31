@@ -74,9 +74,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) return true;
-		if(o == null || getClass() != o.getClass()) return false;
-		MyMap<?, ?> myMap = (MyMap<?, ?>) o;
-		return Objects.equals(root, myMap.root);
+		if(!(o instanceof Map)) return false;
+		Map<?, ?> map = (Map<?, ?>) o;
+		return Objects.equals(entrySet(), map.entrySet());
 	}
 
 	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
@@ -117,14 +117,17 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		@Override
 		public boolean equals(Object o) {
 			if(this == o) return true;
-			if(o == null || getClass() != o.getClass()) return false;
-			MyEntry<?, ?> myEntry = (MyEntry<?, ?>) o;
-			return Objects.equals(key, myEntry.key);
+			if(!(o instanceof Entry)) return false;
+			Entry<?, ?> entry = (Entry<?, ?>) o;
+			return Objects.equals(key, entry.getKey()) && Objects.equals(value, entry.getValue());
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(key);
+			//Copied from TreeMap$Entry#hashCode so that equals work
+			int keyHash = (key == null ? 0 : key.hashCode());
+			int valueHash = (value == null ? 0 : value.hashCode());
+			return keyHash ^ valueHash;
 		}
 
 		public V put(K key, V value) {
