@@ -12,8 +12,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public boolean isEmpty() {
-		//FIXME: Implementation only works if put is not yet implemented
-		return true;
+		return root == null;
 	}
 
 	@Override
