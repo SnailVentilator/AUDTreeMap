@@ -11,6 +11,7 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 
 public class MyMapTest {
+	public static String[] someString = {"404", "Internet", "Not", "Found"};
 	private Map<String, String> myMap;
 	private Map<String, String> treeMap;
 
@@ -19,24 +20,6 @@ public class MyMapTest {
 		myMap = new MyMap<>();
 		treeMap = new TreeMap<>();
 	}
-
-	@Test
-	public void basicPutTest() {
-		executeAndCompare(map -> {
-			map.put(someString[0], someString[1]);
-		});
-	}
-
-	@Test
-	public void isEmptyTest() {
-		assertEqualResult(Map::isEmpty);
-		execute(map -> {
-			map.put(someString[0], someString[1]);
-		});
-		assertEqualResult(Map::isEmpty);
-	}
-
-	public static String[] someString = {"404", "Internet", "Not", "Found"};
 
 	/**
 	 * This helper function executes a given function for each of the maps
@@ -58,8 +41,8 @@ public class MyMapTest {
 	 * @param consumer A consumer that is executed for each map
 	 */
 	public void execute(Consumer<Map<String, String>> consumer) {
-		consumer.accept(myMap);
 		consumer.accept(treeMap);
+		consumer.accept(myMap);
 	}
 
 	/**
@@ -72,8 +55,32 @@ public class MyMapTest {
 	 * @param function A method reference or other function that returns something comparable
 	 */
 	public void assertEqualResult(Function<Map<String, String>, ? extends Comparable<?>> function) {
-		Comparable<?> myMapResult = function.apply(myMap);
 		Comparable<?> treeMapResult = function.apply(treeMap);
+		Comparable<?> myMapResult = function.apply(myMap);
 		assertEquals(treeMapResult, myMapResult);
+	}
+
+	@Test
+	public void putBasic() {
+		executeAndCompare(map -> map.put(someString[0], someString[1]));
+	}
+
+	@Test
+	public void putReplace() {
+		execute(map -> map.put(someString[0], someString[1]));
+		executeAndCompare(map -> map.put(someString[0], someString[2]));
+	}
+
+	@Test
+	public void putNull() {
+		executeAndCompare(map -> map.put(someString[0], null));
+		executeAndCompare(map -> map.put(null, someString[0]));
+	}
+
+	@Test
+	public void isEmptyTest() {
+		assertEqualResult(Map::isEmpty);
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(Map::isEmpty);
 	}
 }
