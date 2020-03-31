@@ -132,7 +132,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		public V put(K key, V value) {
 			MyEntry<K, V> entry = new MyEntry<>(key, value);
-			if(this.equals(entry)) {
+			if(this.key.equals(entry.key)) {
 				V oldValue = this.value;
 				this.value = value;
 				return oldValue;
@@ -150,7 +150,6 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				}
 				return this.right.put(key, value);
 			}
-
 		}
 
 		public int size() {
