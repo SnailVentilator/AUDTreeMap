@@ -35,14 +35,23 @@ public class MyMapTest {
 	 * This is useful for the majority of tests that modify the state of
 	 * the map.
 	 *
-	 * @param runnable A lambda that is executed for each map before comparing
+	 * @param consumer A consumer that is executed for each map before comparing
 	 */
-	public void executeAndCompare(Consumer<Map<String, String>> runnable) {
-		runnable.accept(myMap);
-		runnable.accept(treeMap);
+	public void executeAndCompare(Consumer<Map<String, String>> consumer) {
+		execute(consumer);
 		assertEquals(myMap, treeMap);
 	}
 
+	/**
+	 * This helper function executes a given function for each of the maps
+	 * being tested.
+	 *
+	 * @param consumer A consumer that is executed for each map
+	 */
+	public void execute(Consumer<Map<String, String>> consumer) {
+		consumer.accept(myMap);
+		consumer.accept(treeMap);
+	}
 
 	/**
 	 * This helper function asserts that a given method reference results in the
@@ -51,7 +60,7 @@ public class MyMapTest {
 	 * Example:
 	 * <pre>assertEqualResult(Map::size);</pre>
 	 *
-	 * @param function A method reference that returns something comparable
+	 * @param function A method reference or other function that returns something comparable
 	 */
 	public void assertEqualResult(Function<Map<String, String>, ? extends Comparable<?>> function) {
 		Comparable<?> myMapResult = function.apply(myMap);
