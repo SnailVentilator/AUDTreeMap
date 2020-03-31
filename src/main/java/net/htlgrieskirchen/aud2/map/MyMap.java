@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class MyMap<K,V> implements Map<K,V> {
+public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 	@Override
 	public int size() {
 		throw new IllegalStateException("Not yet implemented!");
@@ -64,5 +64,24 @@ public class MyMap<K,V> implements Map<K,V> {
 	@Override
 	public Set<Entry<K, V>> entrySet() {
 		throw new IllegalStateException("Not yet implemented!");
+	}
+
+	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K,V>> {
+		private K key;
+		private V value;
+
+		private MyEntry<K,V> parent;
+		private MyEntry<K,V> left;
+		private MyEntry<K,V> right;
+
+		@Override
+		public int compareTo(MyEntry<K, V> entry) {
+			return key.compareTo(entry.key);
+		}
+
+		public MyEntry(K key, V value) {
+			this.key = key;
+			this.value = value;
+		}
 	}
 }
