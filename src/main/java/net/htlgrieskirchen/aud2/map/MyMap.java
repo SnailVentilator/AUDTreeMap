@@ -119,7 +119,7 @@ public class MyMap<K extends Comparable<K>,V> implements Map<K,V> {
 					return null;
 				}
 				return this.left.put(key,value);
-			}else {
+			} else {
 				if(this.right == null) {
 					this.right = entry;
 					return null;
