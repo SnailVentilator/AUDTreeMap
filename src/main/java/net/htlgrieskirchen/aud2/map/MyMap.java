@@ -68,11 +68,19 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public Set<Entry<K, V>> entrySet() {
-		throw new IllegalStateException("Not yet implemented!");
+		return root.entrySet();
 	}
 
-	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>> {
-		private K key;
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		MyMap<?, ?> myMap = (MyMap<?, ?>) o;
+		return Objects.equals(root, myMap.root);
+	}
+
+	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
+		private final K key;
 		private V value;
 
 		private MyEntry<K, V> parent;
@@ -87,6 +95,23 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		public MyEntry(K key, V value) {
 			this.key = key;
 			this.value = value;
+		}
+
+		@Override
+		public K getKey() {
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
+		}
+
+		@Override
+		public V setValue(V value) {
+			V oldValue = this.value;
+			this.value = value;
+			return oldValue;
 		}
 
 		@Override
@@ -130,7 +155,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public Set<K> keySet() {
-			Set<K> keySet = new HashSet<>();
+			Set<K> keySet = new LinkedHashSet<>(); //Order is needed for entrySet()
 
 			keySet.add(key);
 			if(left != null) keySet.addAll(left.keySet());
@@ -147,6 +172,16 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(right != null) values.addAll(right.values());
 
 			return values;
+		}
+
+		public Set<Entry<K, V>> entrySet() {
+			Set<Entry<K, V>> entrySet = new HashSet<>();
+
+			entrySet.add(this);
+			if(left != null) entrySet.addAll(left.entrySet());
+			if(right != null) entrySet.addAll(right.entrySet());
+
+			return entrySet;
 		}
 	}
 }
