@@ -61,6 +61,11 @@ public class MyMapTest {
 	}
 
 	@Test
+	public void empty() {
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
 	public void putSimple() {
 		executeAndCompare(map -> map.put(someString[0], someString[1]));
 	}
@@ -78,15 +83,30 @@ public class MyMapTest {
 
 	@Test
 	public void isEmptySimple() {
-		assertEqualResult(Map::isEmpty);
 		execute(map -> map.put(someString[0], someString[1]));
 		assertEqualResult(Map::isEmpty);
 	}
 
 	@Test
 	public void isEmptyNull() {
-		assertEqualResult(Map::isEmpty);
 		execute(map -> map.put(someString[0], null));
 		assertEqualResult(Map::isEmpty);
+	}
+
+	@Test
+	public void sizeEmpty() {
+		assertEqualResult(Map::size);
+	}
+
+	@Test
+	public void sizeSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(Map::size);
+	}
+
+	@Test
+	public void sizeNull() {
+		execute(map -> map.put(someString[0], null));
+		assertEqualResult(Map::size);
 	}
 }

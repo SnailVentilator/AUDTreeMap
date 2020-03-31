@@ -7,6 +7,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public int size() {
+		if(root == null) return 0;
 		return root.size();
 	}
 
@@ -141,12 +142,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(this.compareTo(entry) <= 0) {
 				if(this.left == null) {
 					this.left = entry;
+					this.left.parent = this;
 					return null;
 				}
 				return this.left.put(key, value);
 			} else {
 				if(this.right == null) {
 					this.right = entry;
+					this.right.parent = this;
 					return null;
 				}
 				return this.right.put(key, value);
