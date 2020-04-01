@@ -18,17 +18,20 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsKey(Object key) {
-		throw new IllegalStateException("Not yet implemented!");
+		//FIXME properly implement this
+		return keySet().contains(key);
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		throw new IllegalStateException("Not yet implemented!");
+		//FIXME properly implement this
+		return values().contains(value);
 	}
 
 	@Override
 	public V get(Object key) {
-		throw new IllegalStateException("Not yet implemented!");
+		if(root == null) return null;
+		return root.get(key);
 	}
 
 	@Override
@@ -188,6 +191,19 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(right != null) entrySet.addAll(right.entrySet());
 
 			return entrySet;
+		}
+
+		public V get(Object key) {
+			if(this.key.equals(key)) return value;
+			if(this.left != null) {
+				V value = this.left.get(key);
+				if(value != null)
+					return value;
+			}
+			if(this.right != null) {
+				return this.right.get(key);
+			}
+			return null;
 		}
 	}
 }

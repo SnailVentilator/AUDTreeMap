@@ -5,13 +5,14 @@ import org.junit.Test;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
 public class MyMapTest {
-	public static String[] someString = {"404", "Internet", "Not", "Found"};
+	public static String[] someString = {"404", "Internet", "Not", "Found", "Hallo", "", "Holland", "null", "Sweden", "Kalk", "perfect"};
 	private Map<String, String> myMap;
 	private Map<String, String> treeMap;
 
@@ -108,5 +109,30 @@ public class MyMapTest {
 	public void sizeNull() {
 		execute(map -> map.put(someString[0], null));
 		assertEqualResult(Map::size);
+	}
+
+	@Test
+	public void getEmpty() {
+		assertEqualResult(map -> map.get(someString[0]));
+	}
+
+	@Test
+	public void getSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(map -> map.get(someString[0]));
+	}
+
+	@Test
+	public void getNull() {
+		execute(map -> map.put(someString[0], null));
+		assertEqualResult(map -> map.get(someString[0]));
+	}
+
+	@Test
+	public void getDeep() {
+		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
+			assertEqualResult(map -> map.put(someString[i.get()], someString[i.get()+1]));
+		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
+			assertEqualResult(map -> map.get(someString[i.get()]));
 	}
 }
