@@ -18,14 +18,12 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsKey(Object key) {
-		//FIXME properly implement this
-		return keySet().contains(key);
+		return root != null && root.containsKey(key);
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		//FIXME properly implement this
-		return values().contains(value);
+		return root != null && root.containsValue(value);
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	@Override
 	public void clear() {
 		Set<Entry<K, V>> set = new HashSet<>();
-
+		//FIXME: Komplett zua @SchneckchenAndy
 	}
 
 	@Override
@@ -82,6 +80,11 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		if(!(o instanceof Map)) return false;
 		Map<?, ?> map = (Map<?, ?>) o;
 		return Objects.equals(entrySet(), map.entrySet());
+	}
+
+	@Override
+	public int hashCode() {
+		return entrySet().parallelStream().mapToInt(Entry::hashCode).sum();
 	}
 
 	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
@@ -204,6 +207,18 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				return this.right.get(key);
 			}
 			return null;
+		}
+
+		public boolean containsKey(Object key) {
+			if(Objects.equals(this.key, key))
+				return true;
+			return (left != null && left.containsKey(key)) || (right != null && right.containsKey(key));
+		}
+
+		public boolean containsValue(Object value) {
+			if(Objects.equals(this.value, value))
+				return true;
+			return (left != null && left.containsValue(key)) || (right != null && right.containsValue(key));
 		}
 	}
 }
