@@ -135,4 +135,24 @@ public class MyMapTest {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
 			assertEqualResult(map -> map.get(someString[i.get()]));
 	}
+
+	@Test
+	public void equalsEmpty() {
+		assertEquals(treeMap, myMap);
+		assertEquals(myMap, treeMap);
+	}
+
+	@Test
+	public void equalsSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEquals(treeMap, myMap);
+		assertEquals(myMap, treeMap);
+	}
+
+	@Test
+	public void equalsNull() {
+		execute(map -> map.put(someString[0], null));
+		assertEquals(treeMap, myMap);
+		assertEquals(myMap, treeMap);
+	}
 }
