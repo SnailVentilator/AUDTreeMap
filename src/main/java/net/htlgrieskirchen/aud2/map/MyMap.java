@@ -3,6 +3,10 @@ package net.htlgrieskirchen.aud2.map;
 import java.util.*;
 
 public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
+	private final KeySet keySet = new KeySet();
+	private final ValuesCollection values = new ValuesCollection();
+	private final EntrySet entrySet = new EntrySet();
+
 	private MyEntry<K, V> root = null;
 
 	@Override
@@ -24,6 +28,11 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	@Override
 	public boolean containsValue(Object value) {
 		return root != null && root.containsValue(value);
+	}
+
+	private boolean containsEntry(Entry<?, ?> entry) {
+		if(entry == null) return false;
+		return Objects.equals(get(entry.getKey()), entry.getValue());
 	}
 
 	@Override
@@ -48,6 +57,16 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		throw new IllegalStateException("Not yet implemented!");
 	}
 
+	/**
+	 * Removes all entries that have the given value.
+	 *
+	 * @param value The value to test for
+	 * @return true if the Map has been changed as a result of this method
+	 */
+	private boolean removeByValue(Object value) {
+		throw new IllegalStateException("Not yet implemented!");
+	}
+
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
 		throw new IllegalStateException("Not yet implemented!");
@@ -61,23 +80,17 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public Set<K> keySet() {
-		//FIXME: According to JavaDoc if the set is updated the map should reflect the changes
-		if(root == null) return Collections.emptySet();
-		return root.keySet();
+		return keySet;
 	}
 
 	@Override
 	public Collection<V> values() {
-		//FIXME: According to JavaDoc if the Collection is updated the map should reflect the changes
-		if(root == null) return Collections.emptyList();
-		return root.values();
+		return values;
 	}
 
 	@Override
 	public Set<Entry<K, V>> entrySet() {
-		//FIXME: According to JavaDoc if the set is updated the map should reflect the changes
-		if(root == null) return Collections.emptySet();
-		return root.entrySet();
+		return entrySet;
 	}
 
 	@Override
@@ -225,6 +238,231 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(Objects.equals(this.value, value))
 				return true;
 			return (left != null && left.containsValue(key)) || (right != null && right.containsValue(key));
+		}
+	}
+
+	private class KeySet implements Set<K> {
+		@Override
+		public int size() {
+			return MyMap.this.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return MyMap.this.isEmpty();
+		}
+
+		@Override
+		public boolean contains(Object o) {
+			return containsKey(o);
+		}
+
+		@Override
+		public Iterator<K> iterator() {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public Object[] toArray() {
+			//TODO
+			return new Object[0];
+		}
+
+		@Override
+		public <T> T[] toArray(T[] a) {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public boolean add(K k) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean remove(Object o) {
+			return MyMap.this.remove(o) != null;
+		}
+
+		@Override
+		public boolean containsAll(Collection<?> c) {
+			return c.stream().allMatch(MyMap.this::containsKey);
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends K> c) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> c) {
+			if(root == null) return false;
+			//TODO: Test if the code below can be simplified
+			return root.keySet().stream().filter(k -> !c.contains(k)).map(MyMap.this::remove).map(Objects::nonNull).filter(Boolean::booleanValue).count() > 0;
+		}
+
+		@Override
+		public boolean removeAll(Collection<?> c) {
+			//TODO: Test if the code below can be simplified
+			return c.stream().map(MyMap.this::remove).map(Objects::nonNull).filter(Boolean::booleanValue).count() > 0;
+		}
+
+		@Override
+		public void clear() {
+			MyMap.this.clear();
+		}
+	}
+
+	private class ValuesCollection implements Collection<V> {
+		@Override
+		public int size() {
+			return MyMap.this.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return MyMap.this.isEmpty();
+		}
+
+		@Override
+		public boolean contains(Object o) {
+			return containsValue(o);
+		}
+
+		@Override
+		public Iterator<V> iterator() {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public Object[] toArray() {
+			//TODO
+			return new Object[0];
+		}
+
+		@Override
+		public <T> T[] toArray(T[] a) {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public boolean add(V v) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean remove(Object o) {
+			return MyMap.this.removeByValue(o);
+		}
+
+		@Override
+		public boolean containsAll(Collection<?> c) {
+			if(root == null) return c.isEmpty();
+			return c.stream().allMatch(MyMap.this::containsValue);
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends V> c) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean removeAll(Collection<?> c) {
+			if(root == null) return false;
+			//FIXME: test if below can be simplified
+			return c.stream().map(MyMap.this::removeByValue).filter(Boolean::booleanValue).count() > 0;
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> c) {
+			if(root == null) return false;
+			//FIXME: test if below can be simplified
+			return root.values().stream().filter(v -> !c.contains(v)).map(MyMap.this::removeByValue).filter(Boolean::booleanValue).count() > 0;
+		}
+
+		@Override
+		public void clear() {
+			MyMap.this.clear();
+		}
+	}
+
+	private class EntrySet implements Set<Entry<K, V>> {
+		@Override
+		public int size() {
+			return MyMap.this.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return MyMap.this.isEmpty();
+		}
+
+		@Override
+		public boolean contains(Object o) {
+			if(root == null) return false;
+			return root.entrySet().contains(o);
+		}
+
+		@Override
+		public Iterator<Entry<K, V>> iterator() {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public Object[] toArray() {
+			//TODO
+			return new Object[0];
+		}
+
+		@Override
+		public <T> T[] toArray(T[] a) {
+			//TODO
+			return null;
+		}
+
+		@Override
+		public boolean add(Entry<K, V> kvEntry) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean remove(Object o) {
+			if(!(o instanceof Entry))
+				return false;
+			Entry<?, ?> entry = (Entry<?, ?>) o;
+			return MyMap.this.remove(entry.getKey(), entry.getValue());
+		}
+
+		@Override
+		public boolean containsAll(Collection<?> c) {
+			return c.stream().map(o -> (Entry<?, ?>) o).allMatch(MyMap.this::containsEntry);
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends Entry<K, V>> c) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> c) {
+			if(root == null) return false;
+			//FIXME: find out if the values have to match for removal
+			return root.entrySet().stream().filter(entry -> !c.contains(entry)).map(Entry::getKey).map(MyMap.this::remove).map(Objects::nonNull).count() > 0;
+		}
+
+		@Override
+		public boolean removeAll(Collection<?> c) {
+			//FIXME: find out if the values have to match for removal
+			return c.stream().map(o -> (Entry<?, ?>) o).map(Entry::getKey).map(MyMap.this::remove).map(Objects::nonNull).count() > 0;
+		}
+
+		@Override
+		public void clear() {
+			MyMap.this.clear();
 		}
 	}
 }
