@@ -61,16 +61,22 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public Set<K> keySet() {
+		//FIXME: According to JavaDoc if the set is updated the map should reflect the changes
+		if(root == null) return Collections.emptySet();
 		return root.keySet();
 	}
 
 	@Override
 	public Collection<V> values() {
+		//FIXME: According to JavaDoc if the Collection is updated the map should reflect the changes
+		if(root == null) return Collections.emptyList();
 		return root.values();
 	}
 
 	@Override
 	public Set<Entry<K, V>> entrySet() {
+		//FIXME: According to JavaDoc if the set is updated the map should reflect the changes
+		if(root == null) return Collections.emptySet();
 		return root.entrySet();
 	}
 
