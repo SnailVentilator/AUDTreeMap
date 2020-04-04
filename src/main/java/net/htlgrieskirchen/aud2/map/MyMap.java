@@ -299,14 +299,15 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Object[] toArray() {
-			//TODO
-			return new Object[0];
+			if(root == null) return new Object[0];
+			return root.keySet().toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
-			//TODO
-			return null;
+			if(root == null) return a;
+			//noinspection SuspiciousToArrayCall
+			return root.keySet().toArray(a);
 		}
 
 		@Override
@@ -347,7 +348,6 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			MyMap.this.clear();
 		}
 	}
-
 	private class ValuesCollection implements Collection<V> {
 		@Override
 		public int size() {
@@ -409,14 +409,15 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Object[] toArray() {
-			//TODO
-			return new Object[0];
+			if(root == null) return new Object[0];
+			return root.values().toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
-			//TODO
-			return null;
+			if(root == null) return a;
+			//noinspection SuspiciousToArrayCall
+			return root.values().toArray(a);
 		}
 
 		@Override
@@ -459,7 +460,6 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			MyMap.this.clear();
 		}
 	}
-
 	private class EntrySet implements Set<Entry<K, V>> {
 		@Override
 		public int size() {
@@ -519,14 +519,15 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Object[] toArray() {
-			//TODO
-			return new Object[0];
+			if(root == null) return new Object[0];
+			return root.entrySet().toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
-			//TODO
-			return null;
+			if(root == null) return a;
+			//noinspection SuspiciousToArrayCall
+			return root.entrySet().toArray(a);
 		}
 
 		@Override
