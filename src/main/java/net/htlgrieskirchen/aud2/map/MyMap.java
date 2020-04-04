@@ -43,13 +43,11 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-		MyEntry<K, V> entry = new MyEntry<>(key, value);
 		if(root == null) {
-			root = entry;
+			root = new MyEntry<>(key, value);
 			return null;
-		} else {
-			return root.put(key, value);
 		}
+		return root.put(key, value);
 	}
 
 	@Override
@@ -363,6 +361,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return containsAll(set);
 		}
 	}
+
 	private class ValuesCollection implements Collection<V> {
 		@Override
 		public int size() {
@@ -490,6 +489,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return containsAll(set);
 		}
 	}
+
 	private class EntrySet implements Set<Entry<K, V>> {
 		@Override
 		public int size() {
