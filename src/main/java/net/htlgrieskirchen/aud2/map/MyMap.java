@@ -259,8 +259,42 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Iterator<K> iterator() {
-			//TODO
-			return null;
+			if(root == null) return new Iterator<K>() {
+				@Override
+				public boolean hasNext() {
+					return false;
+				}
+
+				@Override
+				public K next() {
+					throw new NoSuchElementException();
+				}
+
+				@Override
+				public void remove() {
+					throw new IllegalStateException();
+				}
+			};
+			return new Iterator<K>() {
+				private final Iterator<K> iterator = root.keySet().iterator();
+				private K lastReturn = null;
+
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+
+				@Override
+				public K next() {
+					return lastReturn = iterator.next();
+				}
+
+				@Override
+				public void remove() {
+					if(lastReturn == null) throw new IllegalStateException();
+					KeySet.this.remove(lastReturn);
+				}
+			};
 		}
 
 		@Override
@@ -332,8 +366,45 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Iterator<V> iterator() {
-			//TODO
-			return null;
+			if(root == null) return new Iterator<V>() {
+				@Override
+				public boolean hasNext() {
+					return false;
+				}
+
+				@Override
+				public V next() {
+					throw new NoSuchElementException();
+				}
+
+				@Override
+				public void remove() {
+					throw new IllegalStateException();
+				}
+			};
+			return new Iterator<V>() {
+				private final Object UNINITIALIZED = new Object();
+				private final Iterator<V> iterator = root.values().iterator();
+				private Object lastValue = UNINITIALIZED;
+
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+
+				@Override
+				public V next() {
+					V next = iterator.next();
+					lastValue = next;
+					return next;
+				}
+
+				@Override
+				public void remove() {
+					if(lastValue == UNINITIALIZED) throw new IllegalStateException();
+					ValuesCollection.this.remove(lastValue);
+				}
+			};
 		}
 
 		@Override
@@ -408,8 +479,42 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public Iterator<Entry<K, V>> iterator() {
-			//TODO
-			return null;
+			if(root == null) return new Iterator<Entry<K, V>>() {
+				@Override
+				public boolean hasNext() {
+					return false;
+				}
+
+				@Override
+				public Entry<K, V> next() {
+					throw new NoSuchElementException();
+				}
+
+				@Override
+				public void remove() {
+					throw new IllegalStateException();
+				}
+			};
+			return new Iterator<Entry<K, V>>() {
+				private final Iterator<Entry<K, V>> iterator = root.entrySet().iterator();
+				private Entry<K, V> lastEntry = null;
+
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+
+				@Override
+				public Entry<K, V> next() {
+					return lastEntry = iterator.next();
+				}
+
+				@Override
+				public void remove() {
+					if(lastEntry == null) throw new IllegalStateException();
+					EntrySet.this.remove(lastEntry);
+				}
+			};
 		}
 
 		@Override
