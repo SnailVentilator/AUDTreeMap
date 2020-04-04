@@ -347,6 +347,21 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		public void clear() {
 			MyMap.this.clear();
 		}
+
+		@Override
+		public int hashCode() {
+			return stream().mapToInt(Objects::hashCode).sum();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj == this) return true;
+			if(obj == null) return false;
+			if(!(obj instanceof Set<?>)) return false;
+			Set<?> set = (Set<?>) obj;
+			if(size() != set.size()) return false;
+			return containsAll(set);
+		}
 	}
 	private class ValuesCollection implements Collection<V> {
 		@Override
@@ -459,6 +474,21 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		public void clear() {
 			MyMap.this.clear();
 		}
+
+		@Override
+		public int hashCode() {
+			return stream().mapToInt(Objects::hashCode).sum();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj == this) return true;
+			if(obj == null) return false;
+			if(!(obj instanceof Collection<?>)) return false;
+			Collection<?> set = (Collection<?>) obj;
+			if(size() != set.size()) return false;
+			return containsAll(set);
+		}
 	}
 	private class EntrySet implements Set<Entry<K, V>> {
 		@Override
@@ -569,6 +599,21 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		@Override
 		public void clear() {
 			MyMap.this.clear();
+		}
+
+		@Override
+		public int hashCode() {
+			return stream().mapToInt(Objects::hashCode).sum();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj == this) return true;
+			if(obj == null) return false;
+			if(!(obj instanceof Set<?>)) return false;
+			Set<?> set = (Set<?>) obj;
+			if(size() != set.size()) return false;
+			return containsAll(set);
 		}
 	}
 }
