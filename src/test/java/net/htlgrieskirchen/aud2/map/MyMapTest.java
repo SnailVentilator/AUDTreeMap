@@ -33,6 +33,7 @@ public class MyMapTest {
 	public void executeAndCompare(Consumer<Map<String, String>> consumer) {
 		execute(consumer);
 		assertEquals(myMap, treeMap);
+		assertEquals(treeMap, myMap);
 	}
 
 	/**
@@ -59,6 +60,7 @@ public class MyMapTest {
 		Comparable<?> myMapResult = function.apply(myMap);
 		Comparable<?> treeMapResult = function.apply(treeMap);
 		assertEquals(treeMapResult, myMapResult);
+		assertEquals(myMapResult, treeMapResult);
 	}
 
 	@Test
