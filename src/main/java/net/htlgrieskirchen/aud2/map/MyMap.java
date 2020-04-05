@@ -67,13 +67,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		throw new IllegalStateException("Not yet implemented!");
+		for(Entry<? extends K, ? extends V> e : m.entrySet()) {
+			this.put(e.getKey(), e.getValue());
+		}
 	}
 
 	@Override
 	public void clear() {
-		Set<Entry<K, V>> set = new HashSet<>();
-		//FIXME: Komplett zua @SchneckchenAndy
+		root = null;
 	}
 
 	@Override
