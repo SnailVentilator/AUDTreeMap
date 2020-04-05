@@ -157,4 +157,17 @@ public class MyMapTest {
 		assertEquals(treeMap, myMap);
 		assertEquals(myMap, treeMap);
 	}
+
+	@Test
+	public void containsKeySimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(map -> map.containsKey(someString[5]));
+	}
+
+	@Test
+	public void containsKeyEmpty() {
+		assertEqualResult(map -> map.containsKey(someString[0]));
+	}
+
 }
