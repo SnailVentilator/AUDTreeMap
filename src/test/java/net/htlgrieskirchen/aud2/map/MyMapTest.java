@@ -191,4 +191,15 @@ public class MyMapTest {
 		executeAndCompare(map -> map.putAll(myMap2));
 		executeAndCompare(map -> map.putAll(treeMap2));
 	}
+
+	@Test
+	public void clearEmpty() {
+		executeAndCompare(Map::clear);
+	}
+
+	@Test
+	public void clearSimple() {
+		execute(map -> map.put(someString[someString.length - 1], someString[someString.length - 2]));
+		executeAndCompare(Map::clear);
+	}
 }
