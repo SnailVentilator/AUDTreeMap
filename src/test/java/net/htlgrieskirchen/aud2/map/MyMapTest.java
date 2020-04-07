@@ -1,6 +1,7 @@
 package net.htlgrieskirchen.aud2.map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -62,6 +63,11 @@ public class MyMapTest {
 		Comparable<?> treeMapResult = function.apply(treeMap);
 		assertEquals(treeMapResult, myMapResult);
 		assertEquals(myMapResult, treeMapResult);
+	}
+
+	private void fillWithSomeStrings() {
+		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
+			execute(map -> map.put(someString[i.get()], someString[i.get()+1]));
 	}
 
 	@Test
@@ -133,8 +139,7 @@ public class MyMapTest {
 
 	@Test
 	public void getDeep() {
-		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
-			assertEqualResult(map -> map.put(someString[i.get()], someString[i.get()+1]));
+		fillWithSomeStrings();
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
 			assertEqualResult(map -> map.get(someString[i.get()]));
 	}
@@ -201,5 +206,31 @@ public class MyMapTest {
 	public void clearSimple() {
 		execute(map -> map.put(someString[someString.length - 1], someString[someString.length - 2]));
 		executeAndCompare(Map::clear);
+	}
+
+	@Test
+	@Ignore
+	public void removeSimple() {
+		execute(map -> map.put(someString[8], someString[7]));
+		assertEqualResult(map -> map.remove(someString[8]));
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
+	@Ignore
+	public void removeNull() {
+		execute(map -> map.put(someString[5], null));
+		assertEqualResult(map -> map.remove(someString[5]));
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
+	@Ignore
+	public void removeMultipleCombinations() {
+		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet()) {
+			prepareMaps();
+			fillWithSomeStrings();
+			executeAndCompare(map -> map.remove(someString[i.get()]));
+		}
 	}
 }
