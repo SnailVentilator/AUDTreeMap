@@ -3,6 +3,7 @@ package net.htlgrieskirchen.aud2.map;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -170,4 +171,24 @@ public class MyMapTest {
 		assertEqualResult(map -> map.containsKey(someString[0]));
 	}
 
+	@Test
+	public void putAllSingle() {
+		executeAndCompare(map -> map.putAll(Collections.singletonMap(someString[0], someString[1])));
+	}
+
+	@Test
+	public void putAllMultiple() {
+		Map<String, String> myMap2 = new MyMap<>();
+		Map<String, String> treeMap2 = new TreeMap<>();
+
+		myMap2.put(someString[0], someString[1]);
+		myMap2.put(someString[3], someString[4]);
+		myMap2.put(someString[6], someString[7]);
+		treeMap2.put(someString[0], someString[1]);
+		treeMap2.put(someString[3], someString[4]);
+		treeMap2.put(someString[6], someString[7]);
+
+		executeAndCompare(map -> map.putAll(myMap2));
+		executeAndCompare(map -> map.putAll(treeMap2));
+	}
 }
