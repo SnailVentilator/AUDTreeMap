@@ -58,9 +58,9 @@ public class MyMapTest {
 	 *
 	 * @param function A method reference or other function that returns something comparable
 	 */
-	public void assertEqualResult(Function<Map<String, String>, ? extends Comparable<?>> function) {
-		Comparable<?> myMapResult = function.apply(myMap);
-		Comparable<?> treeMapResult = function.apply(treeMap);
+	public void assertEqualResult(Function<Map<String, String>, ?> function) {
+		Object myMapResult = function.apply(myMap);
+		Object treeMapResult = function.apply(treeMap);
 		assertEquals(treeMapResult, myMapResult);
 		assertEquals(myMapResult, treeMapResult);
 	}
