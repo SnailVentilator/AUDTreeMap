@@ -243,4 +243,14 @@ public class MyMapTest {
 			executeAndCompare(map -> map.remove(someString[i.get()]));
 		}
 	}
+
+	@Test
+	public void hashCodeSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(Map::hashCode);
+	}
+
+	@Test
+	public void hashCodeEmpty() { assertEqualResult(Map::hashCode); }
 }
