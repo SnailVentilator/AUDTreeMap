@@ -177,6 +177,16 @@ public class MyMapTest {
 	}
 
 	@Test
+	public void containsValueSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(map -> map.containsValue(someString[6]));
+	}
+
+	@Test
+	public void containsValueEmpty() { assertEqualResult(map -> map.containsValue(someString[5]));}
+
+	@Test
 	public void putAllSingle() {
 		executeAndCompare(map -> map.putAll(Collections.singletonMap(someString[0], someString[1])));
 	}
