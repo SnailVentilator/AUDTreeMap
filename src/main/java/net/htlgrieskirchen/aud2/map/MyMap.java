@@ -236,7 +236,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		public boolean containsValue(Object value) {
 			if(Objects.equals(this.value, value))
 				return true;
-			return (left != null && left.containsValue(key)) || (right != null && right.containsValue(key));
+			return (left != null && left.containsValue(value)) || (right != null && right.containsValue(value));
 		}
 	}
 
