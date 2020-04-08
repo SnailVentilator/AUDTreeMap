@@ -67,7 +67,7 @@ public class MyMapTest {
 
 	private void fillWithSomeStrings() {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
-			execute(map -> map.put(someString[i.get()], someString[i.get() + 1]));
+			execute(map -> map.put(someString[i.get()], someString[i.get()+1]));
 	}
 
 	@Test
@@ -184,9 +184,7 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void containsValueEmpty() {
-		assertEqualResult(map -> map.containsValue(someString[5]));
-	}
+	public void containsValueEmpty() { assertEqualResult(map -> map.containsValue(someString[5]));}
 
 	@Test
 	public void putAllSingle() {
@@ -254,7 +252,25 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void hashCodeEmpty() {
-		assertEqualResult(Map::hashCode);
+	public void hashCodeEmpty() { assertEqualResult(Map::hashCode); }
+
+	@Test
+	public void keySetSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(Map::keySet);
 	}
+
+	@Test
+	public void keySetEmpty() { assertEqualResult(Map::keySet); }
+
+	@Test
+	public void valuesSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(Map::values);
+	}
+
+	@Test
+	public void valuesEmpty() { assertEqualResult(Map::values); }
 }
