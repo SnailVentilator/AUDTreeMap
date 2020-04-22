@@ -1,0 +1,1 @@
+Code coverage: [![coverage report](https://gitlab.com/snailventilator/audtreemap/badges/master/coverage.svg)](https://gitlab.com/snailventilator/audtreemap/-/commits/master)
