@@ -1,5 +1,7 @@
 plugins {
     id 'java-library'
+	id 'jacoco'
+	id 'de.jansauer.printcoverage' version '2.0.0'
 }
 
 repositories {
@@ -8,4 +10,12 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
 }

@@ -1,5 +1,9 @@
 image: gradle:jdk8
 
+stages:
+  - test
+  - coverage
+
 executeTests:
   stage: test
   script:
@@ -7,3 +11,14 @@ executeTests:
   artifacts:
     reports:
       junit: ./build/test-results/test/TEST-*.xml
+
+testCoverage:
+  stage: coverage
+  script:
+    - gradle jacocoTestReport
+    - gradle printCoverage
+  coverage: '/^Coverage:\s(\d+\.\d+%)/'
+  artifacts:
+    name: 'coverageReport'
+    paths:
+      - build/jacocoHtml
