@@ -11,6 +11,8 @@ executeTests:
   artifacts:
     reports:
       junit: ./build/test-results/test/TEST-*.xml
+  cache:
+    untracked: true
 
 testCoverage:
   stage: coverage
@@ -22,3 +24,5 @@ testCoverage:
     name: 'coverageReport'
     paths:
       - build/jacocoHtml
+  cache:
+    untracked: true
