@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class MyMapTest {
@@ -285,4 +286,33 @@ public class MyMapTest {
 
 	@Test
 	public void entrySetEmpty() { assertEqualResult(Map::entrySet); }
+
+	//Test methods of entrySet
+	@Test
+	public void entrySetSize() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(map -> map.entrySet().size());
+	}
+
+	@Test
+	public void entrySetIsEmpty() {
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(map -> map.entrySet().isEmpty());
+	}
+
+	@Test
+	public void entrySetContains() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+
+	}
+
+	@Test
+	public void entrySetToArray() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertArrayEquals(myMap.entrySet().toArray(), treeMap.entrySet().toArray());
+		assertArrayEquals(treeMap.entrySet().toArray(), myMap.entrySet().toArray());
+	}
 }
