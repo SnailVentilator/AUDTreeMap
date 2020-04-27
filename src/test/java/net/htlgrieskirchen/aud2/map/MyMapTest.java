@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -305,7 +307,16 @@ public class MyMapTest {
 	public void entrySetContains() {
 		execute(map -> map.put(someString[0], someString[1]));
 		execute(map -> map.put(someString[5], someString[6]));
-
+		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
+	}
+	@Test
+	public void entrySetContainsEmpty() {
+		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
+	}
+	@Test
+	public void entrySetContainsFalse() {
+		execute(map -> map.put(someString[0], someString[1]));
+		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
 	}
 
 	@Test
