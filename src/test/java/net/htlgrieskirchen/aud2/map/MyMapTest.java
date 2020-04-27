@@ -275,4 +275,14 @@ public class MyMapTest {
 	@Test
 	@Ignore //Java's TreeMap does not implement equals
 	public void valuesEmpty() { assertEqualResult(Map::values); }
+
+	@Test
+	public void entrySetSimple() {
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(Map::entrySet);
+	}
+
+	@Test
+	public void entrySetEmpty() { assertEqualResult(Map::entrySet); }
 }
