@@ -292,17 +292,47 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore //FIXME: Java's TreeMap does not implement equals
-	public void valuesSimple() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
-		assertEqualResult(Map::values);
+	public void valuesIteratorSimple() {
+		fillWithSomeStrings();
+		ArrayList<String> tree = new ArrayList<>();
+		ArrayList<String> map = new ArrayList<>();
+		Iterator<String> treeI = treeMap.values().iterator();
+		Iterator<String> mapI = myMap.values().iterator();
+		while(mapI.hasNext()) {
+			if (treeI.hasNext()) {
+				tree.add(treeI.next());
+				map.add(mapI.next());
+			}
+		}
+		Collections.sort(tree);
+		Collections.sort(map);
+		assertEquals(tree, map);
+		assertEquals(map, tree);
 	}
 
 	@Test
-	@Ignore //FIXME: Java's TreeMap does not implement equals
-	public void valuesEmpty() {
-		assertEqualResult(Map::values);
+	@Ignore //Remove is yet not implemented
+	public void valuesIteratorRemove() {
+		fillWithSomeStrings();
+		ArrayList<String> tree = new ArrayList<>();
+		ArrayList<String> map = new ArrayList<>();
+		Iterator<String> treeI = treeMap.values().iterator();
+		Iterator<String> mapI = myMap.values().iterator();
+		while(mapI.hasNext()) {
+			if (treeI.hasNext()) {
+				treeI.next();
+				treeI.remove();
+				mapI.next();
+				mapI.remove();
+			}
+		}
+		assertEquals(myMap, treeMap);
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
+	public void valuesIteratorEmpty() {
+		assertEqualResult(map -> map.values().iterator().hasNext());
 	}
 
 	//TODO: Test methods of values
