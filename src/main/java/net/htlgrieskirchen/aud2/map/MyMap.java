@@ -185,7 +185,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public Set<K> keySet() {
-			Set<K> keySet = new LinkedHashSet<>(); //Order is needed for entrySet()
+			Set<K> keySet = new HashSet<>();
 
 			keySet.add(key);
 			if(left != null) keySet.addAll(left.keySet());

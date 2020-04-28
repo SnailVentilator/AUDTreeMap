@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -321,9 +321,13 @@ public class MyMapTest {
 
 	@Test
 	public void entrySetToArray() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
-		assertArrayEquals(myMap.entrySet().toArray(), treeMap.entrySet().toArray());
-		assertArrayEquals(treeMap.entrySet().toArray(), myMap.entrySet().toArray());
+		fillWithSomeStrings();
+
+		Object[] treeArray = myMap.entrySet().toArray();
+		Object[] myArray = myMap.entrySet().toArray();
+
+		Arrays.sort(treeArray);
+		Arrays.sort(myArray);
+		assertArrayEquals(treeArray,myArray);
 	}
 }
