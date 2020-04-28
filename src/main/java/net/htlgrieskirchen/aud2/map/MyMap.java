@@ -215,6 +215,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public V get(Object key) {
+			//FIXME: Could this be optimized to only search the side of the tree that the compareTo of the key says?
 			if(this.key.equals(key)) return value;
 			if(this.left != null) {
 				V value = this.left.get(key);

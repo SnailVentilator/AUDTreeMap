@@ -5,10 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -70,12 +67,19 @@ public class MyMapTest {
 
 	private void fillWithSomeStrings() {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet())
-			execute(map -> map.put(someString[i.get()], someString[i.get()+1]));
+			execute(map -> map.put(someString[i.get()], someString[i.get() + 1]));
 	}
 
 	@Test
 	public void empty() {
 		assertEquals(treeMap, myMap);
+	}
+
+	@SuppressWarnings({"EqualsWithItself", "EqualsBetweenInconvertibleTypes", "rawtypes"})
+	@Test
+	public void equalsSelf() {
+		assertEqualResult(map -> map.equals(map));
+		assertEqualResult(map -> map.equals(new ArrayList()));
 	}
 
 	@Test
@@ -95,13 +99,10 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void isEmptySimple() {
+	public void isEmpty() {
+		assertEqualResult(Map::isEmpty);
 		execute(map -> map.put(someString[0], someString[1]));
 		assertEqualResult(Map::isEmpty);
-	}
-
-	@Test
-	public void isEmptyNull() {
 		execute(map -> map.put(someString[0], null));
 		assertEqualResult(Map::isEmpty);
 	}
@@ -168,26 +169,32 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void containsKeySimple() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
-		assertEqualResult(map -> map.containsKey(someString[5]));
+	public void entry_SetValue() {
+		fillWithSomeStrings();
+		executeAndCompare(map -> map.entrySet().forEach(entry -> entry.setValue("test")));
 	}
 
 	@Test
-	public void containsKeyEmpty() {
+	public void containsKeySimple() {
 		assertEqualResult(map -> map.containsKey(someString[0]));
+
+		execute(map -> map.put(someString[0], someString[1]));
+		execute(map -> map.put(someString[5], someString[6]));
+
+		assertEqualResult(map -> map.containsKey(someString[5]));
+		assertEqualResult(map -> map.containsKey(someString[1]));
 	}
 
 	@Test
 	public void containsValueSimple() {
+		assertEqualResult(map -> map.containsValue(someString[5]));
+
 		execute(map -> map.put(someString[0], someString[1]));
 		execute(map -> map.put(someString[5], someString[6]));
-		assertEqualResult(map -> map.containsValue(someString[6]));
-	}
 
-	@Test
-	public void containsValueEmpty() { assertEqualResult(map -> map.containsValue(someString[5]));}
+		assertEqualResult(map -> map.containsValue(someString[6]));
+		assertEqualResult(map -> map.containsValue(someString[0]));
+	}
 
 	@Test
 	public void putAllSingle() {
@@ -255,17 +262,34 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void hashCodeEmpty() { assertEqualResult(Map::hashCode); }
+	public void hashCodeEmpty() {
+		assertEqualResult(Map::hashCode);
+	}
 
 	@Test
-	public void keySetSimple() {
+	public void keySet() {
+		assertEqualResult(Map::keySet);
 		execute(map -> map.put(someString[0], someString[1]));
 		execute(map -> map.put(someString[5], someString[6]));
+		assertEqualResult(Map::keySet);
+		fillWithSomeStrings();
 		assertEqualResult(Map::keySet);
 	}
 
 	@Test
-	public void keySetEmpty() { assertEqualResult(Map::keySet); }
+	public void keySetIsEmpty() {
+		assertEqualResult(map -> map.keySet().isEmpty());
+		fillWithSomeStrings();
+		assertEqualResult(map -> map.keySet().isEmpty());
+	}
+
+	@SuppressWarnings({"RedundantCollectionOperation"})
+	@Test
+	public void keySetContains() {
+		assertEqualResult(map -> map.keySet().contains("new Object()"));
+		fillWithSomeStrings();
+		assertEqualResult(map -> map.keySet().contains(someString[5]));
+	}
 
 	@Test
 	@Ignore //Java's TreeMap does not implement equals
@@ -277,7 +301,9 @@ public class MyMapTest {
 
 	@Test
 	@Ignore //Java's TreeMap does not implement equals
-	public void valuesEmpty() { assertEqualResult(Map::values); }
+	public void valuesEmpty() {
+		assertEqualResult(Map::values);
+	}
 
 	@Test
 	public void entrySetSimple() {
@@ -287,7 +313,9 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void entrySetEmpty() { assertEqualResult(Map::entrySet); }
+	public void entrySetEmpty() {
+		assertEqualResult(Map::entrySet);
+	}
 
 	//Test methods of entrySet
 	@Test
@@ -309,10 +337,12 @@ public class MyMapTest {
 		execute(map -> map.put(someString[5], someString[6]));
 		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
 	}
+
 	@Test
 	public void entrySetContainsEmpty() {
 		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
 	}
+
 	@Test
 	public void entrySetContainsFalse() {
 		execute(map -> map.put(someString[0], someString[1]));
@@ -328,6 +358,7 @@ public class MyMapTest {
 
 		Arrays.sort(treeArray);
 		Arrays.sort(myArray);
-		assertArrayEquals(treeArray,myArray);
+		assertArrayEquals(treeArray, myArray);
+		assertArrayEquals(myArray, treeArray);
 	}
 }
