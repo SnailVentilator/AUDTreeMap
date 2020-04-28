@@ -114,7 +114,7 @@ public class MyMapTest {
 
 	@Test
 	public void sizeSimple() {
-		execute(map -> map.put(someString[0], someString[1]));
+		fillWithSomeStrings();
 		assertEqualResult(Map::size);
 	}
 
@@ -292,7 +292,7 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore //Java's TreeMap does not implement equals
+	@Ignore //FIXME: Java's TreeMap does not implement equals
 	public void valuesSimple() {
 		execute(map -> map.put(someString[0], someString[1]));
 		execute(map -> map.put(someString[5], someString[6]));
@@ -300,15 +300,17 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore //Java's TreeMap does not implement equals
+	@Ignore //FIXME: Java's TreeMap does not implement equals
 	public void valuesEmpty() {
 		assertEqualResult(Map::values);
 	}
 
+	//TODO: Test methods of values
+
+
 	@Test
 	public void entrySetSimple() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
+		fillWithSomeStrings();
 		assertEqualResult(Map::entrySet);
 	}
 
@@ -320,21 +322,19 @@ public class MyMapTest {
 	//Test methods of entrySet
 	@Test
 	public void entrySetSize() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
+		fillWithSomeStrings();
 		assertEqualResult(map -> map.entrySet().size());
 	}
 
 	@Test
 	public void entrySetIsEmpty() {
-		execute(map -> map.put(someString[0], someString[1]));
+		fillWithSomeStrings();
 		assertEqualResult(map -> map.entrySet().isEmpty());
 	}
 
 	@Test
 	public void entrySetContains() {
-		execute(map -> map.put(someString[0], someString[1]));
-		execute(map -> map.put(someString[5], someString[6]));
+		fillWithSomeStrings();
 		assertEqualResult(map -> map.entrySet().contains(new SimpleEntry<>(someString[5], someString[6])));
 	}
 
