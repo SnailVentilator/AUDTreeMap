@@ -278,58 +278,83 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		private V remove() {
 			//No children
-			if(left == null && right == null) {
-				if(this.parent.left == this) {
-					this.parent.left = null;
-					return this.value;
-				}
-				else if(this.parent.right == this) {
-					this.parent.right = null;
-					return this.value;
+			if(this != root) {
+				if (left == null && right == null) {
+					if (this.parent.left == this) {
+						this.parent.left = null;
+						return this.value;
+					} else if (this.parent.right == this) {
+						this.parent.right = null;
+						return this.value;
+					}
 				}
 			}
+			else {
+				if (left == null && right == null) {
+						root = null;
+						return this.value;
+					}
+				}
 			//One child
-			if(left != null && right == null) {
-				if(this.parent.left == this) {
-					this.parent.left = this.left;
-					return this.value;
-				}
-				else if(this.parent.right == this) {
-					this.parent.left = this.left;
-					return this.value;
-				}
-			}
-			else if(right != null && left == null) {
-				if(this.parent.left == this) {
-					this.parent.right = this.right;
-					return this.value;
-				}
-				else if(this.parent.right == this) {
-					this.parent.right = this.right;
-					return this.value;
-				}
-			}
-			//Two children
-			if(left != null && right != null) {
-				if(left.height() > right.height()) {
-					this.left.droStickln(this.right);
-					if(this.parent.left == this) {
+			if(this != root) {
+				if (left != null && right == null) {
+					if (this.parent.left == this) {
+						this.parent.left = this.left;
+						return this.value;
+					} else if (this.parent.right == this) {
 						this.parent.left = this.left;
 						return this.value;
 					}
-					else if(this.parent.right == this) {
-						this.parent.right = this.left;
+				} else if (right != null && left == null) {
+					if (this.parent.left == this) {
+						this.parent.right = this.right;
+						return this.value;
+					} else if (this.parent.right == this) {
+						this.parent.right = this.right;
 						return this.value;
 					}
 				}
-				else {
-					this.right.droStickln(this.left);
-					if(this.parent.left == this) {
-						this.parent.left = this.right;
-						return this.value;
+			}
+			else {
+				if (left != null && right == null) {
+					root = root.left;
+				} else if (right != null && left == null) {
+					root = root.right;
+				}
+			}
+			//Two children
+			if(this != root) {
+				if (left != null && right != null) {
+					if (left.height() > right.height()) {
+						this.left.droStickln(this.right);
+						if (this.parent.left == this) {
+							this.parent.left = this.left;
+							return this.value;
+						} else if (this.parent.right == this) {
+							this.parent.right = this.left;
+							return this.value;
+						}
+					} else {
+						this.right.droStickln(this.left);
+						if (this.parent.left == this) {
+							this.parent.left = this.right;
+							return this.value;
+						} else if (this.parent.right == this) {
+							this.parent.right = this.right;
+							return this.value;
+						}
 					}
-					else if(this.parent.right == this) {
-						this.parent.right = this.right;
+				}
+			}
+			else {
+				if (left != null && right != null) {
+					if (left.height() > right.height()) {
+						this.left.droStickln(this.right);
+						root = root.left;
+						return this.value;
+					} else {
+						this.right.droStickln(this.left);
+						root = root.right;
 						return this.value;
 					}
 				}

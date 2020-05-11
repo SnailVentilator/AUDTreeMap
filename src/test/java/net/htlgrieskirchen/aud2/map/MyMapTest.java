@@ -308,7 +308,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore //Remove is yet not implemented
 	public void valuesIteratorRemove() {
 		fillWithSomeStrings();
 		ArrayList<String> tree = new ArrayList<>();
