@@ -64,7 +64,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	 * @return true if the Map has been changed as a result of this method
 	 */
 	private boolean removeByValue(Object value) {
-		throw new IllegalStateException("Not yet implemented!");
+		if(root == null)
+			return false;
+		return root.removeByValue(value);
 	}
 
 	@Override
@@ -262,7 +264,16 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public boolean removeByValue(Object value) {
-			return true;
+			boolean changed = false;
+			if(this.value.equals(value)) {
+				//TODO: this only works if value != null
+				changed |= this.remove() != null;
+			}
+			if(left != null)
+				changed |= left.removeByValue(value);
+			if(right != null)
+				changed |= right.removeByValue(value);
+			return changed;
 		}
 
 		public V remove() {
