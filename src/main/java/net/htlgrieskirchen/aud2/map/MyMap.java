@@ -109,7 +109,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		return entrySet().parallelStream().mapToInt(Entry::hashCode).sum();
 	}
 
-	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
+	private class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
 		private final K key;
 		private V value;
 
@@ -267,7 +267,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			boolean changed = false;
 			if(this.value.equals(value)) {
 				//TODO: this only works if value != null
-				changed |= this.remove() != null;
+				changed = this.remove() != null;
 			}
 			if(left != null)
 				changed |= left.removeByValue(value);
