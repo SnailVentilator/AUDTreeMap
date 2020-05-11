@@ -311,7 +311,12 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			}
 			//Two children
 			if(left != null && right != null) {
-				System.exit(187);
+				if(left.height() > right.height()) {
+					this.left.droStickln(this.right);
+				}
+				else if(right.height() > left.height()) {
+					this.right.droStickln(this.left);
+				}
 			}
 			assert false;
 			return null;
