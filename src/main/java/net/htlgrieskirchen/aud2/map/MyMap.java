@@ -277,7 +277,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		private V remove() {
-			//No childs
+			//No children
 			if(left == null && right == null) {
 				if(this.parent.left == this) {
 					this.parent.left = null;
@@ -309,7 +309,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 					return this.value;
 				}
 			}
-			//Two childs
+			//Two children
 			if(left != null && right != null) {
 				System.exit(187);
 			}
