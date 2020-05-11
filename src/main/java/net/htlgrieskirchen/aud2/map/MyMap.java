@@ -313,6 +313,8 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(left != null && right != null) {
 				System.exit(187);
 			}
+			assert false;
+			return null;
 		}
 	}
 
