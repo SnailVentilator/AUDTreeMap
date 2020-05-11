@@ -316,6 +316,20 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			assert false;
 			return null;
 		}
+
+		private void droStickln(MyEntry<K,V> entry) {
+			if(left == null) {
+				left = entry;
+				return;
+			}
+			if(right == null) {
+				right = entry;
+				return;
+			}
+			if(left.height() > right.height())
+				right.droStickln(entry);
+			left.droStickln(entry);
+		}
 	}
 
 	private class KeySet implements Set<K> {
