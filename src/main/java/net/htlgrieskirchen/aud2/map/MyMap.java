@@ -150,7 +150,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		@Override
 		public int hashCode() {
-			//Copied from TreeMap$Entry#hashCode so that equals work
+			//Copied from TreeMap$Entry#hashCode so that equals works
 			int keyHash = (key == null ? 0 : key.hashCode());
 			int valueHash = (value == null ? 0 : value.hashCode());
 			return keyHash ^ valueHash;
@@ -226,7 +226,11 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		public boolean containsKey(Object key) {
 			if(Objects.equals(this.key, key))
 				return true;
-			return (left != null && left.containsKey(key)) || (right != null && right.containsKey(key));
+			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
+			if(sideToSearch != null) {
+				return sideToSearch.containsKey(key);
+			}
+			return false;
 		}
 
 		public boolean containsValue(Object value) {
