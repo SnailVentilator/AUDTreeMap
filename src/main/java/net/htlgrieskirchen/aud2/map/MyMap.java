@@ -52,7 +52,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		throw new IllegalStateException("Not yet implemented!");
+
 	}
 
 	/**
@@ -242,6 +242,21 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 					this.left == null ? 0 : this.left.height(),
 					this.right == null ? 0 : this.right.height()
 			);
+		}
+
+		public V removeByKey(Object key) {
+			if(this.key == key) {
+				return this.remove();
+			}
+			return (left != null && left.removeByKey(key)) || (right != null && right.removeByKey(key));
+		}
+
+		public boolean removeByValue(Object value) {
+			return true;
+		}
+
+		public V remove() {
+
 		}
 	}
 
