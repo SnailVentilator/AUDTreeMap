@@ -113,14 +113,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		private MyEntry<K, V> left;
 		private MyEntry<K, V> right;
 
-		@Override
-		public int compareTo(MyEntry<K, V> entry) {
-			return key.compareTo(entry.key);
-		}
-
 		public MyEntry(K key, V value) {
 			this.key = key;
 			this.value = value;
+		}
+
+		@Override
+		public int compareTo(MyEntry<K, V> entry) {
+			return key.compareTo(entry.key);
 		}
 
 		@Override
@@ -224,8 +224,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public boolean containsKey(Object key) {
-			if(Objects.equals(this.key, key))
-				return true;
+			if(Objects.equals(this.key, key)) return true;
 			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
 			if(sideToSearch != null) {
 				return sideToSearch.containsKey(key);
@@ -234,8 +233,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public boolean containsValue(Object value) {
-			if(Objects.equals(this.value, value))
-				return true;
+			if(Objects.equals(this.value, value)) return true;
 			return (left != null && left.containsValue(value)) || (right != null && right.containsValue(value));
 		}
 
