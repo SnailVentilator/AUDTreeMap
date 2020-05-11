@@ -239,6 +239,13 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				return true;
 			return (left != null && left.containsValue(value)) || (right != null && right.containsValue(value));
 		}
+
+		private int height() {
+			return 1 + Math.max(
+					this.left == null ? 0 : this.left.height(),
+					this.right == null ? 0 : this.right.height()
+			);
+		}
 	}
 
 	private class KeySet implements Set<K> {
