@@ -322,6 +322,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return null;
 		}
 
+		@SuppressWarnings("SpellCheckingInspection")
 		private void droStickln(MyEntry<K,V> entry) {
 			if(left == null) {
 				left = entry;
