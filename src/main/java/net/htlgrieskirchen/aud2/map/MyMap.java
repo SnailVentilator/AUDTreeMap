@@ -52,7 +52,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-
+		if(root == null)
+			return null;
+		return root.removeByKey(key);
 	}
 
 	/**
@@ -245,10 +247,18 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		public V removeByKey(Object key) {
-			if(this.key == key) {
+			if(this.key.equals(key)) {
 				return this.remove();
 			}
-			return (left != null && left.removeByKey(key)) || (right != null && right.removeByKey(key));
+			V returnValue = null;
+			if(left != null)
+				returnValue = this.left.removeByKey(key);
+			if(returnValue != null)
+				return returnValue;
+			if(right != null) {
+				return this.right.removeByKey(key);
+			}
+			return null;
 		}
 
 		public boolean removeByValue(Object value) {
