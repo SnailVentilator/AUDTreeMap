@@ -313,9 +313,25 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if(left != null && right != null) {
 				if(left.height() > right.height()) {
 					this.left.droStickln(this.right);
+					if(this.parent.left == this) {
+						this.parent.left = this.left;
+						return this.value;
+					}
+					else if(this.parent.right == this) {
+						this.parent.right = this.left;
+						return this.value;
+					}
 				}
-				else if(right.height() > left.height()) {
+				else {
 					this.right.droStickln(this.left);
+					if(this.parent.left == this) {
+						this.parent.left = this.right;
+						return this.value;
+					}
+					else if(this.parent.right == this) {
+						this.parent.right = this.right;
+						return this.value;
+					}
 				}
 			}
 			assert false;

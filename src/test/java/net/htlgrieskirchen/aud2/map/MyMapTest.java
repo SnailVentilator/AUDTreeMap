@@ -229,7 +229,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeSimple() {
 		execute(map -> map.put(someString[8], someString[7]));
 		assertEqualResult(map -> map.remove(someString[8]));
@@ -237,7 +236,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeNull() {
 		execute(map -> map.put(someString[5], null));
 		assertEqualResult(map -> map.remove(someString[5]));
@@ -245,7 +243,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeMultipleCombinations() {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet()) {
 			prepareMaps();
