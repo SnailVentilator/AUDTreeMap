@@ -248,7 +248,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			);
 		}
 
-		public V removeByKey(Object key) {
+		private V removeByKey(Object key) {
 			if(this.key.equals(key)) {
 				return this.remove();
 			}
@@ -263,7 +263,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return null;
 		}
 
-		public boolean removeByValue(Object value) {
+		private boolean removeByValue(Object value) {
 			boolean changed = false;
 			if(this.value.equals(value)) {
 				//TODO: this only works if value != null
@@ -276,8 +276,43 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return changed;
 		}
 
-		public V remove() {
-
+		private V remove() {
+			//No childs
+			if(left == null && right == null) {
+				if(this.parent.left == this) {
+					this.parent.left = null;
+					return this.value;
+				}
+				else if(this.parent.right == this) {
+					this.parent.right = null;
+					return this.value;
+				}
+			}
+			//One child
+			if(left != null && right == null) {
+				if(this.parent.left == this) {
+					this.parent.left = this.left;
+					return this.value;
+				}
+				else if(this.parent.right == this) {
+					this.parent.left = this.left;
+					return this.value;
+				}
+			}
+			else if(right != null && left == null) {
+				if(this.parent.left == this) {
+					this.parent.right = this.right;
+					return this.value;
+				}
+				else if(this.parent.right == this) {
+					this.parent.right = this.right;
+					return this.value;
+				}
+			}
+			//Two childs
+			if(left != null && right != null) {
+				System.exit(187);
+			}
 		}
 	}
 
