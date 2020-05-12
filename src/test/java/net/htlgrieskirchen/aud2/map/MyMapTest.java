@@ -1,7 +1,6 @@
 package net.htlgrieskirchen.aud2.map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -247,7 +246,9 @@ public class MyMapTest {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet()) {
 			prepareMaps();
 			fillWithSomeStrings();
-			executeAndCompare(map -> map.remove(someString[i.get()]));
+			assertEqualResult(map -> map.remove(someString[i.get()]));
+			assertEquals(myMap, treeMap);
+			assertEquals(treeMap, myMap);
 		}
 	}
 
