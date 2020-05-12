@@ -9,6 +9,7 @@ public class Main {
 		for(int i = 0; i < array.length; i++) {
 			map.put(array[i], null);
 		}
+
 		map.createViewer();
 	}
 }

@@ -412,18 +412,15 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
 
 		@SuppressWarnings("SpellCheckingInspection")
-		private void droStickln(MyEntry<K, V> entry) {
-			if(left == null) {
-				left = entry;
-				return;
-			}
-			if(right == null) {
-				right = entry;
-				return;
-			}
-			if(left.height() > right.height())
-				right.droStickln(entry);
-			left.droStickln(entry);
+		private void droStickln(MyEntry<K, V> entry, boolean rightSide) {
+			MyEntry<K,V> side = rightSide ? right : left;
+			if(side != null)
+				side.droStickln(entry, rightSide);
+			else
+				if(rightSide)
+					right = entry;
+				else
+					left = entry;
 		}
 
 		@Override
