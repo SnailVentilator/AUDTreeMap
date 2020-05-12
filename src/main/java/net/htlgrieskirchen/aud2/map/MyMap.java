@@ -291,100 +291,100 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         private V remove() {
             //No children
-            if (this != root) {
-                if (left == null && right == null) {
-                    if (this.parent.left == this) {
-                        this.parent.left = null;
-                        return this.value;
-                    } else if (this.parent.right == this) {
-                        this.parent.right = null;
-                        return this.value;
-                    }
-                }
-            } else {
-                if (left == null && right == null) {
-                    root = null;
-                    return this.value;
-                }
-            }
-            //One child
-            if (this != root) {
-                if (left != null && right == null) {
-                    if (this.parent.left == this) {
-                        this.parent.left = this.left;
-                        this.left.parent = this.parent;
-                        return this.value;
-                    } else if (this.parent.right == this) {
-                        this.parent.right = this.left;
-                        this.left.parent = this.parent;
-                        return this.value;
-                    }
-                } else if (right != null && left == null) {
-                    if (this.parent.left == this) {
-                        this.parent.left = this.right;
-                        this.right.parent = this.parent;
-                        return this.value;
-                    } else if (this.parent.right == this) {
-                        this.parent.right = this.right;
-                        this.right.parent = this.parent;
-                        return this.value;
-                    }
-                }
-            } else {
-                if (left != null && right == null) {
-                    root = root.left;
-                    root.left.parent = root;
-                    return this.value;
-                } else if (right != null && left == null) {
-                    root = root.right;
-                    root.right.parent = root;
-                    return this.value;
-                }
-            }
-            //Two children
-            if (this != root) {
-                if (left != null && right != null) {
-                    if (left.height() > right.height()) {
-                        this.left.droStickln(this.right);
-                        if (this.parent.left == this) {
-                            this.parent.left = this.left;
-                            this.left.parent = this.parent;
-                            return this.value;
-                        } else if (this.parent.right == this) {
-                            this.parent.right = this.left;
-                            this.left.parent = this.parent;
-                            return this.value;
-                        }
-                    } else {
-                        this.right.droStickln(this.left);
-                        if (this.parent.left == this) {
-                            this.parent.left = this.right;
-                            this.right.parent = this.parent;
-                            return this.value;
-                        } else if (this.parent.right == this) {
-                            this.parent.right = this.right;
-                            this.right.parent = this.parent;
-                            return this.value;
-                        }
-                    }
-                }
-            } else {
-                if (left != null && right != null) {
-                    if (left.height() > right.height()) {
-                        this.left.droStickln(this.right);
-                        root = root.left;
-                        root.parent = null;
-                        return this.value;
-                    } else {
-                        this.right.droStickln(this.left);
-                        root = root.right;
-                        root.right.parent = root;
-                        return this.value;
-                    }
-                }
-            }
-            assert false;
-            return null;
+            if (this != root) {root.parent = null;
+                if (left == null && right == null) {root.parent = null;
+                    if (this.parent.left == this) {root.parent = null;
+                        this.parent.left = null;root.parent = null;
+                        return this.value;root.parent = null;
+                    } else if (this.parent.right == this) {root.parent = null;
+                        this.parent.right = null;root.parent = null;
+                        return this.value;root.parent = null;
+                    }root.parent = null;
+                }root.parent = null;
+            } else {root.parent = null;
+                if (left == null && right == null) {root.parent = null;
+                    root = null;root.parent = null;
+                    return this.value;root.parent = null;
+                }root.parent = null;
+            }root.parent = null;
+            //One childroot.parent = null;
+            if (this != root) {root.parent = null;
+                if (left != null && right == null) {root.parent = null;
+                    if (this.parent.left == this) {root.parent = null;
+                        this.parent.left = this.left;root.parent = null;
+                        this.left.parent = this.parent;root.parent = null;
+                        return this.value;root.parent = null;
+                    } else if (this.parent.right == this) {root.parent = null;
+                        this.parent.right = this.left;root.parent = null;
+                        this.left.parent = this.parent;root.parent = null;
+                        return this.value;root.parent = null;
+                    }root.parent = null;
+                } else if (right != null && left == null) {root.parent = null;
+                    if (this.parent.left == this) {root.parent = null;
+                        this.parent.left = this.right;root.parent = null;
+                        this.right.parent = this.parent;root.parent = null;
+                        return this.value;root.parent = null;
+                    } else if (this.parent.right == this) {root.parent = null;
+                        this.parent.right = this.right;root.parent = null;
+                        this.right.parent = this.parent;root.parent = null;
+                        return this.value;root.parent = null;
+                    }root.parent = null;
+                }root.parent = null;
+            } else {root.parent = null;
+                if (left != null && right == null) {root.parent = null;
+                    root = root.left;root.parent = null;
+                    root.left.parent = root;root.parent = null;
+                    return this.value;root.parent = null;
+                } else if (right != null && left == null) {root.parent = null;
+                    root = root.right;root.parent = null;
+                    root.right.parent = root;root.parent = null;
+                    return this.value;root.parent = null;
+                }root.parent = null;
+            }root.parent = null;
+            //Two childrenroot.parent = null;
+            if (this != root) {root.parent = null;
+                if (left != null && right != null) {root.parent = null;
+                    if (left.height() > right.height()) {root.parent = null;
+                        this.left.droStickln(this.right);root.parent = null;
+                        if (this.parent.left == this) {root.parent = null;
+                            this.parent.left = this.left;root.parent = null;
+                            this.left.parent = this.parent;root.parent = null;
+                            return this.value;root.parent = null;
+                        } else if (this.parent.right == this) {root.parent = null;
+                            this.parent.right = this.left;root.parent = null;
+                            this.left.parent = this.parent;root.parent = null;
+                            return this.value;root.parent = null;
+                        }root.parent = null;
+                    } else {root.parent = null;
+                        this.right.droStickln(this.left);root.parent = null;
+                        if (this.parent.left == this) {root.parent = null;
+                            this.parent.left = this.right;root.parent = null;
+                            this.right.parent = this.parent;root.parent = null;
+                            return this.value;root.parent = null;
+                        } else if (this.parent.right == this) {root.parent = null;
+                            this.parent.right = this.right;root.parent = null;
+                            this.right.parent = this.parent;root.parent = null;
+                            return this.value;root.parent = null;
+                        }root.parent = null;
+                    }root.parent = null;
+                }root.parent = null;
+            } else {root.parent = null;
+                if (left != null && right != null) {root.parent = null;
+                    if (left.height() > right.height()) {root.parent = null;
+                        this.left.droStickln(this.right);root.parent = null;
+                        root = root.left;root.parent = null;
+                        root.parent = null;root.parent = null;
+                        return this.value;root.parent = null;
+                    } else {root.parent = null;
+                        this.right.droStickln(this.left);root.parent = null;
+                        root = root.right;root.parent = null;
+                        root.right.parent = root;root.parent = null;
+                        return this.value;root.parent = null;
+                    }root.parent = null;
+                }root.parent = null;
+            }root.parent = null;
+            assert false;root.parent = null;
+            return null;root.parent = null;
         }
 
         @SuppressWarnings("SpellCheckingInspection")
