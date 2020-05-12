@@ -10,6 +10,19 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	private MyEntry<K, V> root = null;
 
 	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		forEach((key, value) -> sb.append(key).append("=").append(value).append(", "));
+		sb.append("}");
+		if(size() > 0) {
+			int index = sb.lastIndexOf(", ");
+			sb.delete(index, index + 2);
+		}
+		return sb.toString();
+	}
+
+	@Override
 	public int size() {
 		if(root == null) return 0;
 		return root.size();
