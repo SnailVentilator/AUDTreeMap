@@ -416,11 +416,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			MyEntry<K,V> side = rightSide ? right : left;
 			if(side != null)
 				side.droStickln(entry, rightSide);
-			else
-				if(rightSide)
+			else {
+				if(rightSide) {
 					right = entry;
-				else
+				} else {
 					left = entry;
+				}
+				entry.parent = this;
+			}
 		}
 
 		@Override
