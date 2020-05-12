@@ -2,6 +2,7 @@ package net.htlgrieskirchen.aud2.map;
 
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
+import java.awt.*;
 import java.util.*;
 
 public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
@@ -138,7 +139,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
             tree.expandRow(i);
         }
         frame.add(tree);
+        frame.setMinimumSize(new Dimension(300,300));
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
