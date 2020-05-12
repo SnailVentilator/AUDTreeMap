@@ -303,107 +303,103 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return changed;
 		}
 
-		private V remove() {
-			//No children
-			if(this != root) {
-				if(left == null && right == null) {
-					if(this.parent.left == this) {
-						this.parent.left = null;
-						return this.value;
-					} else if(this.parent.right == this) {
-						this.parent.right = null;
-						return this.value;
-					}
-				}
-			} else {
-				if(left == null && right == null) {
-					root = null;
-					return this.value;
-				}
-			}
-			//One child
-			if(this != root) {
-				if(left != null && right == null) {
-					if(this.parent.left == this) {
-						this.parent.left = this.left;
-						this.left.parent = this.parent;
-						return this.value;
-					} else if(this.parent.right == this) {
-						this.parent.right = this.left;
-						this.left.parent = this.parent;
-						return this.value;
-					}
-				} else if(right != null && left == null) {
-					if(this.parent.left == this) {
-						this.parent.left = this.right;
-						this.right.parent = this.parent;
-						return this.value;
-					} else if(this.parent.right == this) {
-						this.parent.right = this.right;
-						this.right.parent = this.parent;
-						return this.value;
-					}
-				}
-			} else {
-				if(left != null && right == null) {
-					root = root.left;
-					root.left.parent = root;
-					root.parent = null;
-					return this.value;
-				} else if(right != null && left == null) {
-					root = root.right;
-					root.right.parent = root;
-					root.parent = null;
-					return this.value;
-				}
-			}
-			//Two children
-			if(this != root) {
-				if(left != null && right != null) {
-					if(left.height() > right.height()) {
-						this.left.droStickln(this.right);
-						if(this.parent.left == this) {
-							this.parent.left = this.left;
-							this.left.parent = this.parent;
-							return this.value;
-						} else if(this.parent.right == this) {
-							this.parent.right = this.left;
-							this.left.parent = this.parent;
-							return this.value;
-						}
-					} else {
-						this.right.droStickln(this.left);
-						if(this.parent.left == this) {
-							this.parent.left = this.right;
-							this.right.parent = this.parent;
-							return this.value;
-						} else if(this.parent.right == this) {
-							this.parent.right = this.right;
-							this.right.parent = this.parent;
-							return this.value;
-						}
-					}
-				}
-			} else {
-				if(left != null && right != null) {
-					if(left.height() > right.height()) {
-						this.left.droStickln(this.right);
-						root = root.left;
-						root.left.parent = root;
-						root.parent = null;
-						return this.value;
-					} else {
-						this.right.droStickln(this.left);
-						root = root.right;
-						root.right.parent = root;
-						root.parent = null;
-						return this.value;
-					}
-				}
-			}
-			assert false;
-			return null;
-		}
+        private V remove() {
+            //No children
+            if (this != root) {
+                if (left == null && right == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = null;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = null;
+                        return this.value;
+                    }
+                }
+            } else {
+                if (left == null && right == null) {
+                    root = null;
+                    return this.value;
+                }
+            }
+            //One child
+            if (this != root) {
+                if (left != null && right == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = this.left;
+                        this.left.parent = this.parent;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = this.left;
+                        this.left.parent = this.parent;
+                        return this.value;
+                    }
+                } else if (right != null && left == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = this.right;
+                        this.right.parent = this.parent;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = this.right;
+                        this.right.parent = this.parent;
+                        return this.value;
+                    }
+                }
+            } else {
+                if (left != null && right == null) {
+                    root = root.left;
+                    root.parent = null;
+                    return this.value;
+                } else if (right != null && left == null) {
+                    root = root.right;
+                    root.parent = null;
+                    return this.value;
+                }
+            }
+            //Two children
+            if (this != root) {
+                if (left != null && right != null) {
+                    if (left.height() > right.height()) {
+                        this.left.droStickln(this.right);
+                        if (this.parent.left == this) {
+                            this.parent.left = this.left;
+                            this.left.parent = this.parent;
+                            return this.value;
+                        } else if (this.parent.right == this) {
+                            this.parent.right = this.left;
+                            this.left.parent = this.parent;
+                            return this.value;
+                        }
+                    } else {
+                        this.right.droStickln(this.left);
+                        if (this.parent.left == this) {
+                            this.parent.left = this.right;
+                            this.right.parent = this.parent;
+                            return this.value;
+                        } else if (this.parent.right == this) {
+                            this.parent.right = this.right;
+                            this.right.parent = this.parent;
+                            return this.value;
+                        }
+                    }
+                }
+            } else {
+                if (left != null && right != null) {
+                    if (left.height() > right.height()) {
+                        this.left.droStickln(this.right);
+                        root = root.left;
+                        root.parent = null;
+                        return this.value;
+                    } else {
+                        this.right.droStickln(this.left);
+                        root = root.right;
+                        root.parent = null;
+                        return this.value;
+                    }
+                }
+            }
+            assert false;
+            return null;
+        }
 
 		@SuppressWarnings("SpellCheckingInspection")
 		private void droStickln(MyEntry<K, V> entry) {
