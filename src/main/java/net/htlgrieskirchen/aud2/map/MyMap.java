@@ -301,9 +301,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		}
 
 		private boolean removeByValue(Object value) {
+			if(value == null) throw new IllegalArgumentException("removeByValue currently only supports non null parameters"); //FIXME
 			boolean changed = false;
 			if(this.value.equals(value)) {
-				//TODO: this only works if value != null
 				changed = this.remove() != null;
 			}
 			if(left != null)
