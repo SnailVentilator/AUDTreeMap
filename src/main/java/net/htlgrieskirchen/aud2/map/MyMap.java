@@ -334,10 +334,12 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
                 if (left != null && right == null) {
                     root = root.left;
                     root.left.parent = root;
+                    root.parent = null;
                     return this.value;
                 } else if (right != null && left == null) {
                     root = root.right;
                     root.right.parent = root;
+                    root.parent = null;
                     return this.value;
                 }
             }
@@ -373,12 +375,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
                     if (left.height() > right.height()) {
                         this.left.droStickln(this.right);
                         root = root.left;
+                        root.left.parent = root;
                         root.parent = null;
                         return this.value;
                     } else {
                         this.right.droStickln(this.left);
                         root = root.right;
                         root.right.parent = root;
+                        root.parent = null;
                         return this.value;
                     }
                 }
