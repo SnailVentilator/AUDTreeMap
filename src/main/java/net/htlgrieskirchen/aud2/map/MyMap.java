@@ -369,7 +369,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
             if (this != root) {
                 if (left != null && right != null) {
                     if (left.height() > right.height()) {
-                        this.left.droStickln(this.right);
+                        this.left.droStickln(this.right, true);
                         if (this.parent.left == this) {
                             this.parent.left = this.left;
                             this.left.parent = this.parent;
@@ -380,7 +380,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
                             return this.value;
                         }
                     } else {
-                        this.right.droStickln(this.left);
+                        this.right.droStickln(this.left, false);
                         if (this.parent.left == this) {
                             this.parent.left = this.right;
                             this.right.parent = this.parent;
@@ -395,12 +395,12 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
             } else {
                 if (left != null && right != null) {
                     if (left.height() > right.height()) {
-                        this.left.droStickln(this.right);
+                        this.left.droStickln(this.right, true);
                         root = root.left;
                         root.parent = null;
                         return this.value;
                     } else {
-                        this.right.droStickln(this.left);
+                        this.right.droStickln(this.left, false);
                         root = root.right;
                         root.parent = null;
                         return this.value;
