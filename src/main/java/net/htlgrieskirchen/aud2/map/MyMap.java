@@ -126,7 +126,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	public void createViewer() {
 		JFrame frame = new JFrame("TreeMap-Viewer");
-        JTree tree = new JTree(root);
+        JTree tree = new JTree(root){
+            @Override
+            public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+                MyEntry<K, V> entry = (MyEntry<K, V>) value;
+                if(entry.parent == null) return entry.toString();
+                return (entry.parent.left == entry ? "[L] " : "[R] ") + entry.toString();
+            }
+        };
         for(int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
