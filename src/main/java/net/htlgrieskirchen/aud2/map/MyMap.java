@@ -1,5 +1,8 @@
 package net.htlgrieskirchen.aud2.map;
 
+import javax.swing.*;
+import javax.swing.tree.TreeNode;
+import java.awt.*;
 import java.util.*;
 
 public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
@@ -8,6 +11,19 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	private final EntrySet entrySet = new EntrySet();
 
 	private MyEntry<K, V> root = null;
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		forEach((key, value) -> sb.append(key).append("=").append(value).append(", "));
+		sb.append("}");
+		if(size() > 0) {
+			int index = sb.lastIndexOf(", ");
+			sb.delete(index, index + 2);
+		}
+		return sb.toString();
+	}
 
 	@Override
 	public int size() {
@@ -52,7 +68,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		throw new IllegalStateException("Not yet implemented!");
+		if(root == null)
+			return null;
+		return root.removeByKey(key);
 	}
 
 	/**
@@ -62,7 +80,9 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 	 * @return true if the Map has been changed as a result of this method
 	 */
 	private boolean removeByValue(Object value) {
-		throw new IllegalStateException("Not yet implemented!");
+		if(root == null)
+			return false;
+		return root.removeByValue(value);
 	}
 
 	@Override
@@ -105,7 +125,28 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		return entrySet().parallelStream().mapToInt(Entry::hashCode).sum();
 	}
 
-	private static class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V> {
+	public void createViewer() {
+		JFrame frame = new JFrame("TreeMap-Viewer");
+        JTree tree = new JTree(root){
+            @Override
+            public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+                MyEntry<K, V> entry = (MyEntry<K, V>) value;
+                if(entry.parent == null) return entry.toString();
+                return (entry.parent.left == entry ? "[L] " : "[R] ") + entry.toString();
+            }
+        };
+        for(int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }
+        frame.add(tree);
+        frame.setMinimumSize(new Dimension(300,300));
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+
+	@SuppressWarnings("TypeParameterHidesVisibleType")
+	private class MyEntry<K extends Comparable<K>, V> implements Comparable<MyEntry<K, V>>, Entry<K, V>, TreeNode {
 		private final K key;
 		private V value;
 
@@ -242,6 +283,198 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 					this.left == null ? 0 : this.left.height(),
 					this.right == null ? 0 : this.right.height()
 			);
+		}
+
+		private V removeByKey(Object key) {
+			if(this.key.equals(key)) {
+				return this.remove();
+			}
+			V returnValue = null;
+			if(left != null)
+				returnValue = this.left.removeByKey(key);
+			if(returnValue != null)
+				return returnValue;
+			if(right != null) {
+				return this.right.removeByKey(key);
+			}
+			return null;
+		}
+
+		private boolean removeByValue(Object value) {
+			if(value == null) throw new IllegalArgumentException("removeByValue currently only supports non null parameters"); //FIXME
+			boolean changed = false;
+			if(this.value.equals(value)) {
+				changed = this.remove() != null;
+			}
+			if(left != null)
+				changed |= left.removeByValue(value);
+			if(right != null)
+				changed |= right.removeByValue(value);
+			return changed;
+		}
+
+        private V remove() {
+            //No children
+            if (this != root) {
+                if (left == null && right == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = null;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = null;
+                        return this.value;
+                    }
+                }
+            } else {
+                if (left == null && right == null) {
+                    root = null;
+                    return this.value;
+                }
+            }
+            //One child
+            if (this != root) {
+                if (left != null && right == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = this.left;
+                        this.left.parent = this.parent;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = this.left;
+                        this.left.parent = this.parent;
+                        return this.value;
+                    }
+                } else if (right != null && left == null) {
+                    if (this.parent.left == this) {
+                        this.parent.left = this.right;
+                        this.right.parent = this.parent;
+                        return this.value;
+                    } else if (this.parent.right == this) {
+                        this.parent.right = this.right;
+                        this.right.parent = this.parent;
+                        return this.value;
+                    }
+                }
+            } else {
+                if (left != null && right == null) {
+                    root = root.left;
+                    root.parent = null;
+                    return this.value;
+                } else if (right != null && left == null) {
+                    root = root.right;
+                    root.parent = null;
+                    return this.value;
+                }
+            }
+            //Two children
+            if (this != root) {
+                if (left != null && right != null) {
+                    if (left.height() > right.height()) {
+                        this.left.droStickln(this.right, true);
+                        if (this.parent.left == this) {
+                            this.parent.left = this.left;
+                            this.left.parent = this.parent;
+                            return this.value;
+                        } else if (this.parent.right == this) {
+                            this.parent.right = this.left;
+                            this.left.parent = this.parent;
+                            return this.value;
+                        }
+                    } else {
+                        this.right.droStickln(this.left, false);
+                        if (this.parent.left == this) {
+                            this.parent.left = this.right;
+                            this.right.parent = this.parent;
+                            return this.value;
+                        } else if (this.parent.right == this) {
+                            this.parent.right = this.right;
+                            this.right.parent = this.parent;
+                            return this.value;
+                        }
+                    }
+                }
+            } else {
+                if (left != null && right != null) {
+                    if (left.height() > right.height()) {
+                        this.left.droStickln(this.right, true);
+                        root = root.left;
+                        root.parent = null;
+                        return this.value;
+                    } else {
+                        this.right.droStickln(this.left, false);
+                        root = root.right;
+                        root.parent = null;
+                        return this.value;
+                    }
+                }
+            }
+            assert false;
+            return null;
+        }
+
+		@SuppressWarnings("SpellCheckingInspection")
+		private void droStickln(MyEntry<K, V> entry, boolean rightSide) {
+			MyEntry<K,V> side = rightSide ? right : left;
+			if(side != null)
+				side.droStickln(entry, rightSide);
+			else {
+				if(rightSide) {
+					right = entry;
+				} else {
+					left = entry;
+				}
+				entry.parent = this;
+			}
+		}
+
+		@Override
+		public TreeNode getChildAt(int childIndex) {
+			if(childIndex == 0) return left == null ? right : left;
+			if(childIndex == 1) return right;
+			return null;
+		}
+
+		@Override
+		public int getChildCount() {
+			return (left == null ? 0 : 1) + (right == null ? 0 : 1);
+		}
+
+		@Override
+		public TreeNode getParent() {
+			return this.parent;
+		}
+
+		@Override
+		public int getIndex(TreeNode node) {
+			throw new RuntimeException("NOT IMPLEMENTED: getChildAt");
+		}
+
+		@Override
+		public boolean getAllowsChildren() {
+			return true;
+		}
+
+		@Override
+		public boolean isLeaf() {
+			return false;
+		}
+
+		@Override
+		public Enumeration<TreeNode> children() {
+			ArrayList<TreeNode> children = new ArrayList<>();
+			if(left != null) {
+				children.add(left);
+				children.addAll(Collections.list(left.children()));
+			}
+			if(right != null) {
+				children.add(right);
+				children.addAll(Collections.list(right.children()));
+			}
+			return Collections.enumeration(children);
+		}
+
+		@Override
+		public String toString() {
+			return key + "=" + value;
 		}
 	}
 

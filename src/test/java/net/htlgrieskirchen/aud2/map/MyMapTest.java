@@ -1,7 +1,6 @@
 package net.htlgrieskirchen.aud2.map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -229,7 +228,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeSimple() {
 		execute(map -> map.put(someString[8], someString[7]));
 		assertEqualResult(map -> map.remove(someString[8]));
@@ -237,7 +235,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeNull() {
 		execute(map -> map.put(someString[5], null));
 		assertEqualResult(map -> map.remove(someString[5]));
@@ -245,12 +242,13 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore
 	public void removeMultipleCombinations() {
 		for(final AtomicInteger i = new AtomicInteger(0); i.get() < 10; i.incrementAndGet()) {
 			prepareMaps();
 			fillWithSomeStrings();
-			executeAndCompare(map -> map.remove(someString[i.get()]));
+			assertEqualResult(map -> map.remove(someString[i.get()]));
+			assertEquals(myMap, treeMap);
+			assertEquals(treeMap, myMap);
 		}
 	}
 
@@ -311,7 +309,6 @@ public class MyMapTest {
 	}
 
 	@Test
-	@Ignore //Remove is yet not implemented
 	public void valuesIteratorRemove() {
 		fillWithSomeStrings();
 		ArrayList<String> tree = new ArrayList<>();
