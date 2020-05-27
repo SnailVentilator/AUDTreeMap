@@ -290,29 +290,52 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void valuesIteratorSimple() {
+	public void keySetIteratorSimple() {
 		fillWithSomeStrings();
-		ArrayList<String> tree = new ArrayList<>();
-		ArrayList<String> map = new ArrayList<>();
-		Iterator<String> treeI = treeMap.values().iterator();
-		Iterator<String> mapI = myMap.values().iterator();
+		Iterator<String> treeI = treeMap.keySet().iterator();
+		Iterator<String> mapI = myMap.keySet().iterator();
+		while(treeI.hasNext() && mapI.hasNext())
+			assertEquals(treeI.next(), mapI.next());
+		assertEquals(treeI.hasNext(), false);
+		assertEquals(mapI.hasNext(), false);
+	}
+
+	@Test
+	public void keySetIteratorRemove() {
+		fillWithSomeStrings();
+		Iterator<String> treeI = treeMap.keySet().iterator();
+		Iterator<String> mapI = myMap.keySet().iterator();
 		while(mapI.hasNext()) {
 			if (treeI.hasNext()) {
-				tree.add(treeI.next());
-				map.add(mapI.next());
+				treeI.next();
+				treeI.remove();
+				mapI.next();
+				mapI.remove();
 			}
 		}
-		Collections.sort(tree);
-		Collections.sort(map);
-		assertEquals(tree, map);
-		assertEquals(map, tree);
+		assertEquals(myMap, treeMap);
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
+	public void keySetIteratorEmpty() {
+		assertEqualResult(map -> map.keySet().iterator().hasNext());
+	}
+
+	@Test
+	public void valuesIteratorSimple() {
+		fillWithSomeStrings();
+		Iterator<String> treeI = treeMap.values().iterator();
+		Iterator<String> mapI = myMap.values().iterator();
+		while(treeI.hasNext() && mapI.hasNext())
+			assertEquals(treeI.next(), mapI.next());
+		assertEquals(treeI.hasNext(), false);
+		assertEquals(mapI.hasNext(), false);
 	}
 
 	@Test
 	public void valuesIteratorRemove() {
 		fillWithSomeStrings();
-		ArrayList<String> tree = new ArrayList<>();
-		ArrayList<String> map = new ArrayList<>();
 		Iterator<String> treeI = treeMap.values().iterator();
 		Iterator<String> mapI = myMap.values().iterator();
 		while(mapI.hasNext()) {
@@ -388,4 +411,38 @@ public class MyMapTest {
 		assertArrayEquals(treeArray, myArray);
 		assertArrayEquals(myArray, treeArray);
 	}
+
+	@Test
+	public void entrySetIteratorSimple() {
+		fillWithSomeStrings();
+		Iterator<Map.Entry<String, String>> treeI = treeMap.entrySet().iterator();
+		Iterator<Map.Entry<String, String>> mapI = myMap.entrySet().iterator();
+		while(treeI.hasNext() && mapI.hasNext())
+			assertEquals(treeI.next(), mapI.next());
+		assertEquals(treeI.hasNext(), false);
+		assertEquals(mapI.hasNext(), false);
+	}
+
+	@Test
+	public void entrySetIteratorRemove() {
+		fillWithSomeStrings();
+		Iterator<Map.Entry<String, String>> treeI = treeMap.entrySet().iterator();
+		Iterator<Map.Entry<String, String>> mapI = myMap.entrySet().iterator();
+		while(mapI.hasNext()) {
+			if (treeI.hasNext()) {
+				treeI.next();
+				treeI.remove();
+				mapI.next();
+				mapI.remove();
+			}
+		}
+		assertEquals(myMap, treeMap);
+		assertEquals(treeMap, myMap);
+	}
+
+	@Test
+	public void entrySetIteratorEmpty() {
+		assertEqualResult(map -> map.entrySet().iterator().hasNext());
+	}
+
 }
