@@ -235,16 +235,9 @@ public class MyMapTest {
 	}
 
 	@Test
-	public void removeNullValue() {
+	public void removeNull() {
 		execute(map -> map.put(someString[5], null));
 		assertEqualResult(map -> map.remove(someString[5]));
-		assertEquals(treeMap, myMap);
-	}
-
-	@Test
-	public void removeNullKey() {
-		execute(map -> map.put(null, null));
-		assertEqualResult(map -> map.remove(null));
 		assertEquals(treeMap, myMap);
 	}
 
