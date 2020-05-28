@@ -154,7 +154,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		private MyEntry<K, V> left;
 		private MyEntry<K, V> right;
 
-		public MyEntry(K key, V value) {
+		private MyEntry(K key, V value) {
 			this.key = key;
 			this.value = value;
 		}
@@ -197,7 +197,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return keyHash ^ valueHash;
 		}
 
-		public V put(K key, V value) {
+		private V put(K key, V value) {
 			MyEntry<K, V> entry = new MyEntry<>(key, value);
 			if(this.key.equals(entry.key)) {
 				V oldValue = this.value;
@@ -221,11 +221,11 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			}
 		}
 
-		public int size() {
+		private int size() {
 			return 1 + (left == null ? 0 : left.size()) + (right == null ? 0 : right.size());
 		}
 
-		public Set<K> keySet() {
+		private Set<K> keySet() {
 			Set<K> keySet = new HashSet<>();
 
 			keySet.add(key);
@@ -235,7 +235,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return keySet;
 		}
 
-		public Collection<V> values() {
+		private Collection<V> values() {
 			Collection<V> values = new ArrayList<>();
 
 			values.add(value);
@@ -245,7 +245,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return values;
 		}
 
-		public Set<Entry<K, V>> entrySet() {
+		private Set<Entry<K, V>> entrySet() {
 			Set<Entry<K, V>> entrySet = new HashSet<>();
 
 			entrySet.add(this);
@@ -255,7 +255,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return entrySet;
 		}
 
-		public V get(Object key) {
+		private V get(Object key) {
 			if(this.key.equals(key)) return value;
 			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
 			if(sideToSearch != null) {
@@ -264,7 +264,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return null;
 		}
 
-		public boolean containsKey(Object key) {
+		private boolean containsKey(Object key) {
 			if(Objects.equals(this.key, key)) return true;
 			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
 			if(sideToSearch != null) {
@@ -273,7 +273,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			return false;
 		}
 
-		public boolean containsValue(Object value) {
+		private boolean containsValue(Object value) {
 			if(Objects.equals(this.value, value)) return true;
 			return (left != null && left.containsValue(value)) || (right != null && right.containsValue(value));
 		}
@@ -513,7 +513,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				}
 			};
 			return new Iterator<K>() {
-				private final Iterator<K> iterator = root.keySet().iterator();
+				private final Iterator<K> iterator = new TreeSet<>(root.keySet()).iterator();
 				private K lastReturn = null;
 
 				@Override
@@ -537,14 +537,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		@Override
 		public Object[] toArray() {
 			if(root == null) return new Object[0];
-			return root.keySet().toArray();
+			return new TreeSet<>(root.keySet()).toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
 			if(root == null) return a;
 			//noinspection SuspiciousToArrayCall
-			return root.keySet().toArray(a);
+			return new TreeSet<>(root.keySet()).toArray(a);
 		}
 
 		@Override
@@ -637,7 +637,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 			};
 			return new Iterator<V>() {
 				private final Object UNINITIALIZED = new Object();
-				private final Iterator<V> iterator = root.values().iterator();
+				private final Iterator<V> iterator = root.entrySet().stream().sorted().map(Entry::getValue).iterator();
 				private Object lastValue = UNINITIALIZED;
 
 				@Override
@@ -765,7 +765,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				}
 			};
 			return new Iterator<Entry<K, V>>() {
-				private final Iterator<Entry<K, V>> iterator = root.entrySet().iterator();
+				private final Iterator<Entry<K, V>> iterator = root.entrySet().stream().sorted().iterator();
 				private Entry<K, V> lastEntry = null;
 
 				@Override
@@ -789,14 +789,14 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 		@Override
 		public Object[] toArray() {
 			if(root == null) return new Object[0];
-			return root.entrySet().toArray();
+			return root.entrySet().stream().sorted().toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
 			if(root == null) return a;
 			//noinspection SuspiciousToArrayCall
-			return root.entrySet().toArray(a);
+			return new TreeSet<>(root.entrySet()).toArray(a);
 		}
 
 		@Override
