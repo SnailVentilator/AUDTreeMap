@@ -130,7 +130,8 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
         JTree tree = new JTree(root){
             @Override
             public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                MyEntry<K, V> entry = (MyEntry<K, V>) value;
+	            //noinspection unchecked
+	            MyEntry<K, V> entry = (MyEntry<K, V>) value;
                 if(entry.parent == null) return entry.toString();
                 return (entry.parent.left == entry ? "[L] " : "[R] ") + entry.toString();
             }
@@ -257,6 +258,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		private V get(Object key) {
 			if(this.key.equals(key)) return value;
+			//noinspection unchecked
 			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
 			if(sideToSearch != null) {
 				return sideToSearch.get(key);
@@ -266,6 +268,7 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		private boolean containsKey(Object key) {
 			if(Objects.equals(this.key, key)) return true;
+			//noinspection unchecked
 			MyEntry<K, V> sideToSearch = this.key.compareTo((K) key) < 0 ? left : right;
 			if(sideToSearch != null) {
 				return sideToSearch.containsKey(key);
