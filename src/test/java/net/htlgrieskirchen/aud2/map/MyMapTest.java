@@ -9,8 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class MyMapTest {
 	public static String[] someString = {"404", "Internet", "Not", "Found", "Hallo", "", "Holland", "null", "Sweden", "Kalk", "perfect"};
@@ -296,8 +295,8 @@ public class MyMapTest {
 		Iterator<String> mapI = myMap.keySet().iterator();
 		while(treeI.hasNext() && mapI.hasNext())
 			assertEquals(treeI.next(), mapI.next());
-		assertEquals(treeI.hasNext(), false);
-		assertEquals(mapI.hasNext(), false);
+		assertFalse(treeI.hasNext());
+		assertFalse(mapI.hasNext());
 	}
 
 	@Test
@@ -306,7 +305,7 @@ public class MyMapTest {
 		Iterator<String> treeI = treeMap.keySet().iterator();
 		Iterator<String> mapI = myMap.keySet().iterator();
 		while(mapI.hasNext()) {
-			if (treeI.hasNext()) {
+			if(treeI.hasNext()) {
 				treeI.next();
 				treeI.remove();
 				mapI.next();
@@ -325,12 +324,15 @@ public class MyMapTest {
 	@Test
 	public void valuesIteratorSimple() {
 		fillWithSomeStrings();
-		Iterator<String> treeI = treeMap.values().iterator();
-		Iterator<String> mapI = myMap.values().iterator();
-		while(treeI.hasNext() && mapI.hasNext())
-			assertEquals(treeI.next(), mapI.next());
-		assertEquals(treeI.hasNext(), false);
-		assertEquals(mapI.hasNext(), false);
+
+		Iterator<String> treeIterator = treeMap.values().iterator();
+		Iterator<String> mapIterator = myMap.values().iterator();
+
+		while(treeIterator.hasNext() && mapIterator.hasNext())
+			assertEquals(mapIterator.next(), treeIterator.next());
+
+		assertFalse(mapIterator.hasNext());
+		assertFalse(treeIterator.hasNext());
 	}
 
 	@Test
@@ -339,7 +341,7 @@ public class MyMapTest {
 		Iterator<String> treeI = treeMap.values().iterator();
 		Iterator<String> mapI = myMap.values().iterator();
 		while(mapI.hasNext()) {
-			if (treeI.hasNext()) {
+			if(treeI.hasNext()) {
 				treeI.next();
 				treeI.remove();
 				mapI.next();
@@ -419,8 +421,8 @@ public class MyMapTest {
 		Iterator<Map.Entry<String, String>> mapI = myMap.entrySet().iterator();
 		while(treeI.hasNext() && mapI.hasNext())
 			assertEquals(treeI.next(), mapI.next());
-		assertEquals(treeI.hasNext(), false);
-		assertEquals(mapI.hasNext(), false);
+		assertFalse(treeI.hasNext());
+		assertFalse(mapI.hasNext());
 	}
 
 	@Test
@@ -429,7 +431,7 @@ public class MyMapTest {
 		Iterator<Map.Entry<String, String>> treeI = treeMap.entrySet().iterator();
 		Iterator<Map.Entry<String, String>> mapI = myMap.entrySet().iterator();
 		while(mapI.hasNext()) {
-			if (treeI.hasNext()) {
+			if(treeI.hasNext()) {
 				treeI.next();
 				treeI.remove();
 				mapI.next();
