@@ -315,8 +315,8 @@ public class MyMap<K extends Comparable<K>, V> implements Map<K, V> {
 				changed |= right.removeByValue(value);
 			return changed;
 		}
-
-        private V remove() {
+		@SuppressWarnings("ConstantConditions")
+		private V remove() {
             //No children
             if (this != root) {
                 if (left == null && right == null) {
