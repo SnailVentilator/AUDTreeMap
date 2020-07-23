@@ -1,5 +1,6 @@
-package net.htlgrieskirchen.aud2.map;
+package net.htlgrieskirchen.aud2.map.classic;
 
+import net.htlgrieskirchen.aud2.map.MyMap;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -6,10 +6,22 @@ plugins {
 
 repositories {
     jcenter()
+    maven {
+        url 'http://maven.icm.edu.pl/artifactory/repo/'
+    }
+}
+
+project(":auto-test") {
+    apply plugin: 'java-library'
+    dependencies {
+        implementation files("C:\\Program Files\\Java\\jdk1.8.0_144\\lib\\tools.jar")
+    }
 }
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    testAnnotationProcessor project(":auto-test")
+    testImplementation project(":auto-test")
 }
 
 jacocoTestReport {
@@ -19,3 +31,4 @@ jacocoTestReport {
         html.destination file("${buildDir}/jacocoHtml")
     }
 }
+
