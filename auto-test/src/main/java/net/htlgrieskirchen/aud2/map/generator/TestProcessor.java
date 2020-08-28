@@ -89,6 +89,7 @@ public class TestProcessor extends AbstractProcessor {
         sourceCode
                 .append("package ").append(annotatedElement.asElement().packge().fullname).append(";\n")
                 .append("\n")
+                .append("import org.junit.Before;\n")
                 .append("import org.junit.Test;\n")
                 .append("import static org.junit.Assert.*;\n")
                 .append("\n")
@@ -97,7 +98,10 @@ public class TestProcessor extends AbstractProcessor {
                 .append("\n")
                 .append("public class ").append(annotatedElement.asElement().getSimpleName()).append("Generated {\n")
                 .append("\tprivate ").append(annotation.shouldImplementation.asElement().getSimpleName()).append(" expected;\n")
-                .append("\tprivate ").append(annotation.testImplementation.asElement().getSimpleName()).append(" testing;\n");
+                .append("\tprivate ").append(annotation.testImplementation.asElement().getSimpleName()).append(" testing;\n")
+                .append("\n")
+                .append(createInitializerMethod(annotation))
+                .append("\n");
 
         List<Symbol.MethodSymbol> methods =
                 annotation.testInterface.asElement().getEnclosedElements()
@@ -119,6 +123,18 @@ public class TestProcessor extends AbstractProcessor {
 
         sourceCode.append("}");
         return sourceCode.toString();
+    }
+
+    private String createInitializerMethod(AutoTestParameters annotation) {
+        String code =
+                "expected = new " + annotation.shouldImplementation.asElement().getSimpleName() + "();\n" +
+                        "testing = new " + annotation.testImplementation.asElement().getSimpleName() + "();\n";
+
+        String method = "@Before\n" +
+                "public void initializeInstances() throws Exception {\n" +
+                indentCode(code, 1) + "\n" +
+                "}\n";
+        return indentCode(method, 1);
     }
 
     private String generateTestForMethod(Symbol.MethodSymbol method, AutoTestParameters annotation) {
@@ -167,8 +183,12 @@ public class TestProcessor extends AbstractProcessor {
 
         sourceCode.append("assertEquals(expected, testing);");
 
-        String[] lines = sourceCode.toString().split("\n");
-        return Arrays.stream(lines).map(line -> "\t\t" + line).collect(Collectors.joining("\n"));
+        return indentCode(sourceCode.toString(), 2);
+    }
+
+    private String indentCode(String source, int amount) {
+        String indentation = new String(new char[amount]).replaceAll("\0", "\t");
+        return Arrays.stream(source.split("\n")).map(line -> indentation + line).collect(Collectors.joining("\n"));
     }
 
     private static class AutoTestParameters {
